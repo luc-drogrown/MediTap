@@ -1,30 +1,18 @@
-MediTap
-📁 Folder Structure
-/ (root)
-│
-├── src/
-│   ├── client/     # Frontend (UI, forms, etc.)
-│   └── server/     # Backend (API, DB manager, etc.)
-│
-├── tests/          # Automated tests
-├── docs/           # Documentation
-│
-└── solution files in root
-🌿 Git Instructions
-Always branch off main
-Naming Conventions
+# MediTap
 
-When implementing a feature:
+## Git Workflow
 
-feat/your-feature
+- Always branch off `main`
 
-When fixing an issue:
+### Branch Naming Conventions
 
-br/fix/issue-fixed
-✅ Merge Policy
-A branch is merged only after:
-It has been reviewed
-It has been tested
-🔧 Notes
-Keep branches focused on a single feature or fix
-Follow naming conventions strictly for consistency
+- Features: `feat/your-feature`
+- Bug fixes: `fix/issue-fixed`
+
+### Rules
+
+1. Create a branch from `main`
+2. Implement your changes
+3. Submit for review
+4. Ensure tests pass
+5. Features or fixes are merged into the main branch after review and tests
