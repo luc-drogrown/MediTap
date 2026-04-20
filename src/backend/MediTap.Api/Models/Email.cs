@@ -22,8 +22,37 @@ namespace MediTap.Api.Models
             }
 
         }
+        
 
-        // TODO 
-        // Add methods to check if email is valid or not
+        private bool checkEmailValidity(string email)
+        {
+            if(email == null || !email.Contains("@"))
+            {
+                return false;
+            }
+
+            var parts = email.Split('@');
+
+            if (parts.Length == 2)
+            {
+                if (!parts[1].Contains("."))
+                {
+                    return false;
+                }
+
+                if (parts[0].Length < 1)
+                {
+                    return false;
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+
+        }
+
     }
 }

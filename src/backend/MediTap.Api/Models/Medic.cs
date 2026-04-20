@@ -10,14 +10,16 @@
 
         public string FirstName { get; set; }
 
-        public Email Email { get; set; }
-
         public string Specialty { get; set; }
-
 
         // The statuses were taken from the [here](https://regmed.cmr.ro/registrul-medicilor)
         public MedicStatus MedicStatus { get; set; }
+
+
+        // Non mandatory info about the medic
         public string? LastName { get; set; }
+        public Email? Email { get; set; }
+        public PhoneNumber? PhoneNumber { get; set; }
 
 
         // Foreign keys
@@ -34,6 +36,9 @@
         // A medic can have multiple appointments => one-to-many relationship
         public ICollection<Appointment> Appointments { get; set; }
 
+        // A collection of affections diagnosed by the medic.
+        // A medic can diagnose multiple affections => one-to-many relationship
+        public ICollection<Affection> Affections { get; set; }
 
     }
 }

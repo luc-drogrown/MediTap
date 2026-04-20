@@ -11,6 +11,8 @@ namespace MediTap.Api.Models
         public string CodNumericPersonal { get; set; }
         public bool isValid { get; set; }
 
+        public static string CNP_Constant { get; private set; } = "279146358279";
+
         public CNP( string codNumericPersonal)
         {
             this.isValid = checkCNPValidity(codNumericPersonal);
@@ -25,9 +27,29 @@ namespace MediTap.Api.Models
 
         }
 
-        // TODO
-        // Add methods to check if a CNP is valid or not
+        // Method to check if a CNP is valid or not
+        private bool checkCNPValidity(string cnp) {
+            double sum = 0;
+            for (int i = 0; i < 12; i++)
+            {
+                sum += Char.GetNumericValue(cnp[i]) * Char.GetNumericValue(CNP_Constant[i]);
+            }
+            int foundControlDigit;
 
+            if ((sum % 11) < 10)
+            {
+                foundControlDigit = (int)(sum % 11);
+            }
+            else { 
+                foundControlDigit = 1;
+            }
+
+            int controlDigit = (int)Char.GetNumericValue(cnp[12]);
+
+
+            return foundControlDigit == controlDigit; 
+        
+        }
 
     }
 }

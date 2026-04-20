@@ -28,6 +28,14 @@
 
         // A collection of appointments associated with the patient.
         // A patient can have multiple appointments => one-to-many relationship
-        public ICollection<Appointment> Appointments { get; set; }
+        public ICollection<Appointment>? Appointments { get; set; }
+
+        // A collection of affections associated with the patient.
+        // A patient can have multiple affections => one-to-many relationship
+        public ICollection<Affection>? Affections { get; set; }
+
+        // A collection of symptoms associated with the patient.
+        // A patient can have multiple symptoms => one-to-many relationship
+        public ICollection<Symptom> Symptoms { get; set; }
     }
 }
