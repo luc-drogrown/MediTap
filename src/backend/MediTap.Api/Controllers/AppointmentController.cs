@@ -1,16 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediTap.Api.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using MediTap.Api.Services.Interfaces;
 namespace MediTap.Api.Controllers
 {
+    // DONE
     [ApiController]
     [Route("api/[controller]")]
     public class AppointmentController : ControllerBase
     {
 
         private readonly ILogger<AppointmentController> _logger;
-        public AppointmentController(ILogger<AppointmentController> logger)
+        private readonly IAppointmentService _appointmentService;
+        public AppointmentController(ILogger<AppointmentController> logger, IAppointmentService appointmentService)
         {
             _logger = logger;
+            _appointmentService = appointmentService;
         }
 
 
@@ -26,29 +32,51 @@ namespace MediTap.Api.Controllers
 
         // Get appointment by ID
         // GET: api/appointment/5
+        [Authorize(Roles = "Medic,Patient")]
         [HttpGet("{id}")]
         public ActionResult<Appointment> GetById(int id)
         {
-            var appointment = AppointmentService.GetById(id);
+            // Check that the user is either the medic or the patient associated with the appointment
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            var appointment = _appointmentService.GetById(id, userId, role);
             if (appointment == null)
             {
+                _logger.LogWarning("Appointment with ID {Id} not found", id);
                 return NotFound();
             }
 
+
+            // Return the appointment
             return Ok(appointment);
         }
 
-        // TODO 
-        // Implement logic for medic vs patient appointment
+
         // Create a new appointment
         // POST: api/appointment
+        [Authorize(Roles = "Medic,Patient")]
         [HttpPost]
         public IActionResult CreateAppointment(Appointment appointment)
         {
+            // FIrst a sanity check
+            if (appointment == null)
+            {
+                _logger.LogWarning("Received null appointment object in request body");
+                return NotFound();
+            }
+
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            // Check that the user is either the medic or the patient associated with the appointment
             _logger.LogInformation("Creating a new appointment: {Appointment}", appointment);
             try
             {
-                AppointmentService.Add(appointment);
+                var result = _appointmentService.Add(appointment, userId, role);
+                if(result == null)
+                {
+                    _logger.LogWarning("Failed to create appointment: {Appointment}", appointment);
+                    return NotFound();
+                }
             }
             catch (Exception ex)
             {
@@ -63,19 +91,26 @@ namespace MediTap.Api.Controllers
 
         // Delete an appointment
         // DELETE: api/appointment/5
+        [Authorize(Roles = "Medic,Patient")]
         [HttpDelete("{id}")]
         public ActionResult DeleteAppointment(int id)
         {
-            _logger.LogInformation("Deleting appointment with ID: {Id}", id);
-            var appointment = AppointmentService.GetById(id);
+            // Check that the user is either the medic or the patient associated with the appointment
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            var appointment = _appointmentService.GetById(id, userId, role);
             if (appointment == null)
             {
                 _logger.LogWarning("Appointment with ID {Id} not found", id);
                 return NotFound();
             }
+
+
+            // Delete the appointment
+            _logger.LogInformation("Deleting appointment with ID: {Id}", id);
             try
             {
-                AppointmentService.Delete(id);
+                _appointmentService.Delete(id);
             }
             catch (Exception ex)
             {

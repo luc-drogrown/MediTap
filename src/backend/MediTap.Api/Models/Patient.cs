@@ -9,7 +9,7 @@
         public string FirstName { get; set; }
 
         public string Uname { get; private set; }
-        public string Password { get; set; }
+        public string PasswordHash { get; set; }
         
         /// Non essential info about the patient
         public string? LastName { get; set; }
