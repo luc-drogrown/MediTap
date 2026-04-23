@@ -8,7 +8,8 @@
     {
         public int Id { get; set; }
 
-        public string Description { get; set; }
+        public string Name { get; set; }
+
 
         // A checked symptom means that a medic has aknowledged that the patient has this symptom
         public bool isChecked { get; set; }
@@ -19,6 +20,8 @@
         public DateTime AddedDate { get; set; }
 
         public DateOnly? StartOfSymptoms { get; set; }
+        public string? Description { get; set; }
+
 
         // Foreign Keys
         // The Patient that added this symptom

@@ -7,7 +7,9 @@
         public DateOnly DateOfBirth { get; set;}
         public CNP CNP { get; set; }
         public string FirstName { get; set; }
-        
+
+        public string Uname { get; private set; }
+        public string Password { get; set; }
         
         /// Non essential info about the patient
         public string? LastName { get; set; }
@@ -37,5 +39,22 @@
         // A collection of symptoms associated with the patient.
         // A patient can have multiple symptoms => one-to-many relationship
         public ICollection<Symptom> Symptoms { get; set; }
+
+
+        // Constructors
+        public Patient(string firstName, CNP cnp)
+        {
+            if(firstName == null) { throw new ArgumentNullException("First name cannot be null"); }
+
+            if(cnp == null) {throw new ArgumentNullException("CNP cannot be null"); }
+
+            this.FirstName = firstName;
+            this.CNP = cnp;
+
+            this.Uname = "P-" + this.FirstName + "-" + this.CNP.ToString().Substring(0,4) + "-" + Guid.NewGuid().ToString().Substring(0, 8);
+        }
+
+        private Patient()
+        { }
     }
 }

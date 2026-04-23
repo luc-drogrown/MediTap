@@ -9,13 +9,10 @@ namespace MediTap.Api.Models
     public class CNP
     {
         public string CodNumericPersonal { get; set; }
-        public bool isValid { get; set; }
-
-        public static string CNP_Constant { get; private set; } = "279146358279";
 
         public CNP( string codNumericPersonal)
         {
-            this.isValid = checkCNPValidity(codNumericPersonal);
+            bool isValid = checkCNPValidity(codNumericPersonal);
             if(isValid)
             {
                 this.CodNumericPersonal = codNumericPersonal;
@@ -29,6 +26,7 @@ namespace MediTap.Api.Models
 
         // Method to check if a CNP is valid or not
         private bool checkCNPValidity(string cnp) {
+            var CNP_Constant = "279146358279";
             double sum = 0;
             for (int i = 0; i < 12; i++)
             {
