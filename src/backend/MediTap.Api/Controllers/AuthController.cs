@@ -24,6 +24,8 @@ namespace MediTap.Api.Controllers
             _logger = logger;
         }
 
+
+        
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequestDTO request)
         {
@@ -69,6 +71,9 @@ namespace MediTap.Api.Controllers
                 {
                     if (!Verify(request.Password, medic.PasswordHash))
                     {
+                        //_logger.LogInformation("Attempting to log with password: {Password}", BCrypt.Net.BCrypt.HashPassword(request.Password));
+                        //_logger.LogInformation("Hashed password: {PasswordHash}", medic.PasswordHash);
+
                         _logger.LogWarning("Login failed for medic with username: {Username} - Incorrect password", request.Uname);
                         return Unauthorized("Invalid username or password.");
                     }

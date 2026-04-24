@@ -36,6 +36,7 @@ namespace MediTap.Api.Models
         {
             base.OnModelCreating(modelBuilder);
 
+
             // Tells EF how to handle the MedicStatus enum when saving to the database. 
             modelBuilder.Entity<Medic>()
                 .Property(e => e.MedicStatus)

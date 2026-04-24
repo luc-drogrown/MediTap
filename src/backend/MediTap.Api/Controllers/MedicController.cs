@@ -3,6 +3,7 @@ using MediTap.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using MediTap.Api.Services.Interfaces;
+using MediTap.Api.DTO;
 namespace MediTap.Api.Controllers
 {
     // DONE
@@ -39,6 +40,36 @@ namespace MediTap.Api.Controllers
 
         }
 
+
+        // Create Medic profile
+        // Can only be done by an admin (MedicId = 1)
+        // POST: api/medic
+        [Authorize(Roles = "Medic")]
+        [HttpPost]
+        public IActionResult CreateMedic([FromBody] MedicCreationDTO request)
+        {
+            _logger.LogInformation("Creating medic profile for username: {Uname}", request.FirstName);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (role != "Medic" && userId != 1)
+            {
+                _logger.LogWarning("Unauthorized attempt to create medic profile by user ID: {Id} with role: {Role}", userId, role);
+                return NotFound();
+            }
+
+
+            try
+            {
+                var response = _medicService.Create(request);
+                _logger.LogInformation("Medic profile created successfully for username: {Uname}", response.Uname);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating medic profile for username: {Uname}", request.FirstName);
+                return BadRequest(ex.Message);
+            }
+        }
 
         // ---------------------------------------------------------------------//
         // These endpoints have information that can

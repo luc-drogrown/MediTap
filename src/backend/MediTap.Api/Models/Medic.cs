@@ -49,16 +49,27 @@
 
 
         // Constructors
-        public Medic(string firstName, string specialty)
+        public Medic(string firstName, string specialty, string Password,MedicStatus medicStatus)
         {
             if(firstName == null) { throw new ArgumentNullException("First name cannot be null"); }
             if(specialty == null) { throw new ArgumentNullException("Specialty cannot be null"); }
-
+            
+            this.PasswordHash = BCrypt.Net.BCrypt.HashPassword(Password);
             this.FirstName = firstName;
             this.Specialty = specialty;
+            this.MedicStatus = medicStatus;
 
             this.Uname = "M-" + this.FirstName + "-" + this.Specialty + "-" + Guid.NewGuid().ToString().Substring(0, 8);
         }
+
+        // Used to create the admin
+        public Medic(int id, string Password)
+        {
+            this.Id = id;
+            this.PasswordHash = BCrypt.Net.BCrypt.HashPassword(Password);
+            this.Uname = "ADMIN-" + Guid.NewGuid().ToString().Substring(0, 8);
+        }
+
 
         private Medic() { }
 
