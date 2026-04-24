@@ -42,13 +42,16 @@
 
 
         // Constructors
-        public Patient(string firstName, CNP cnp)
+        public Patient(string firstName, CNP cnp, DateOnly dateOfBirth, string password)
         {
             if(firstName == null) { throw new ArgumentNullException("First name cannot be null"); }
-
             if(cnp == null) {throw new ArgumentNullException("CNP cannot be null"); }
+            if(password == null) { throw new ArgumentNullException("Password cannot be null"); }
 
+
+            this.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
             this.FirstName = firstName;
+            this.DateOfBirth = dateOfBirth;
             this.CNP = cnp;
 
             this.Uname = "P-" + this.FirstName + "-" + this.CNP.ToString().Substring(0,4) + "-" + Guid.NewGuid().ToString().Substring(0, 8);

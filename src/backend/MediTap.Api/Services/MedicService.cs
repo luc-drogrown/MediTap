@@ -1,10 +1,9 @@
 ﻿using MediTap.Api.DTO;
 using MediTap.Api.Models;
 using MediTap.Api.Services.Interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 namespace MediTap.Api.Services
 {
+    // DONE
     public class MedicService : IMedicService
     {
 
@@ -36,11 +35,21 @@ namespace MediTap.Api.Services
             return medic;
         }
 
-        Medic IMedicService.GetById(int id)
+        MedicSummaryDTO IMedicService.GetById(int id)
         {
             var medic = _context.Medics.Find(id);
 
-            return medic;
+            if(medic == null)
+            {
+                _logger.LogWarning("Medic with ID {Id} not found", id);
+                return null;
+            }
+
+            // Creates a MedicSummaryDTO from the Medic entity found in the DB
+            // so that we return only neccesary information to the frontend
+            var medicDTO = new MedicSummaryDTO(medic);
+
+            return medicDTO;
         }
     }
 }

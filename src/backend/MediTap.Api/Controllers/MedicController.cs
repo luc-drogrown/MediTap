@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MediTap.Api.Models;
+//using MediTap.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using MediTap.Api.Services.Interfaces;
@@ -23,7 +23,7 @@ namespace MediTap.Api.Controllers
         // GET: api/medic/me
         [Authorize(Roles = "Medic")]
         [HttpGet("me")]
-        public ActionResult<Medic> GetMyProfile()
+        public ActionResult<MedicSummaryDTO> GetMyProfile()
         {
             var loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 

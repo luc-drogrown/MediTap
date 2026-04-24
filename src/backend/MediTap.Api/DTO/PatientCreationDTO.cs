@@ -10,19 +10,17 @@ namespace MediTap.Api.DTO
     {
         public DateOnly DateOfBirth { get; set;}
 
-        public CNP CNP { get; set; }
+        public string CNP { get; set; }
 
         public string FirstName { get; set; }
-
-        public string Uname { get; set; }
 
         public string Password { get; set; }
 
         public string? LastName { get; set; }
 
-        public Email? Email { get; set; }
+        public string? Email { get; set; }
 
-        public PhoneNumber? PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
         public string? Address { get; set; }
 

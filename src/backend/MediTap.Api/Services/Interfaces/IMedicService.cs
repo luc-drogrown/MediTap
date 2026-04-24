@@ -5,7 +5,7 @@ namespace MediTap.Api.Services.Interfaces
 {
     public interface IMedicService
     {
-        Medic GetById(int id);
+        MedicSummaryDTO GetById(int id);
         Medic Create(MedicCreationDTO request);
     }
 }

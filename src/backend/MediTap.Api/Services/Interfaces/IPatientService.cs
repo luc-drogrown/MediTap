@@ -6,14 +6,13 @@ namespace MediTap.Api.Services.Interfaces
     public interface IPatientService
     {
         Patient Create(PatientCreationDTO request);
-        Patient GetLoggedInPatient(int loggedInUserId);
+        PatientDTO GetLoggedInPatient(int loggedInUserId);
         IEnumerable<PatientSummaryDTO> GetProfileSummary(int id);
-
-        IEnumerable<Appointment> GetAppointment(int id, int loggedInUserId, string role);
-        IEnumerable<Symptom> GetSymptom(int id);
-        IEnumerable<Medication> GetMedication(int id);
-        IEnumerable<Affection> GetAffection(int id);
-        Patient GetById(int id, int loggedInUserId, string role);
-        Patient AddSymptom(Symptom symptom, int patientId, string role);
+        IEnumerable<AppointmentDTO> GetAppointment(int id, int loggedInUserId, string role);
+        IEnumerable<SymptomDTO> GetSymptom(int id);
+        IEnumerable<MedicationDTO> GetMedication(int id);
+        IEnumerable<AffectionDTO> GetAffection(int id);
+        PatientDTO GetById(int id, int loggedInUserId, string role);
+        PatientDTO AddSymptom(SymptomDTO symptom, int patientId, string role);
     }
 }

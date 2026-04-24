@@ -28,7 +28,7 @@ namespace MediTap.Api.Controllers
         // GET: api/patient/me
         [Authorize(Roles = "Patient")]
         [HttpGet("me")]
-        public ActionResult<Patient> GetMyProfile()
+        public ActionResult<PatientDTO> GetMyProfile()
         {
             // Finds the Id of the logged in user from the JWT
             var loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
@@ -88,7 +88,7 @@ namespace MediTap.Api.Controllers
         // GET: api/patient/5/appointment
         [Authorize(Roles = "Medic")]
         [HttpGet("{id}/appointment")]
-        public ActionResult<IEnumerable<Appointment>> GetAppointments(int id)
+        public ActionResult<IEnumerable<AppointmentDTO>> GetAppointments(int id)
         {
             _logger.LogInformation("Getting appointments for patient ID: {Id}", id);
             var loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
@@ -117,7 +117,7 @@ namespace MediTap.Api.Controllers
         // GET: api/patient/5/symptom
         [Authorize(Roles = "Medic")]
         [HttpGet("{id}/symptom")]
-        public ActionResult<IEnumerable<Symptom>> GetSymptoms(int id)
+        public ActionResult<IEnumerable<SymptomDTO>> GetSymptoms(int id)
         {
             _logger.LogInformation("Getting symptoms for patient ID: {Id}", id);
             var loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
@@ -147,7 +147,7 @@ namespace MediTap.Api.Controllers
         // GET: api/patient/5/affection
         [Authorize(Roles = "Medic")]
         [HttpGet("{id}/affection")]
-        public ActionResult<IEnumerable<Affection>> GetAffections(int id)
+        public ActionResult<IEnumerable<AffectionDTO>> GetAffections(int id)
         {
             _logger.LogInformation("Getting affections for patient ID: {Id}", id);
             var loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
@@ -176,7 +176,7 @@ namespace MediTap.Api.Controllers
         // GET: api/patient/5/medication
         [Authorize(Roles = "Medic")]
         [HttpGet("{id}/medication")]
-        public ActionResult<IEnumerable<Medication>> GetMedications(int id)
+        public ActionResult<IEnumerable<MedicationDTO>> GetMedications(int id)
         {
             _logger.LogInformation("Getting medications for patient ID: {Id}", id);
             var loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
@@ -242,13 +242,12 @@ namespace MediTap.Api.Controllers
         // POST: api/patient/me/symptom
         [Authorize(Roles = "Patient")]
         [HttpPost("me/symptom")]
-        public ActionResult<Symptom> CreateSymptom(Symptom symptom)
+        public ActionResult<SymptomDTO> CreateSymptom(SymptomDTO symptom)
         {
             var loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
             _logger.LogInformation("Adding symptom for patient ID: {Id}, Symptom: {Symptom}", loggedInUserId, symptom);
             var patient = _patientService.GetLoggedInPatient(loggedInUserId);
-            _logger.LogInformation("Patient found for symptom addition: {Patient}", patient);
 
             if (patient == null)
             {
