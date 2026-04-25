@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MediTap.Api.Models;
+using MediTap.Api.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using MediTap.Api.Services.Interfaces;
@@ -90,20 +91,23 @@ namespace MediTap.Api.Controllers
         [HttpGet("{id}/appointment")]
         public ActionResult<IEnumerable<AppointmentDTO>> GetAppointments(int id)
         {
-            _logger.LogInformation("Getting appointments for patient ID: {Id}", id);
-            var loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var role = User.FindFirst(ClaimTypes.Role)?.Value;
-            var patient = _patientService.GetById(id, loggedInUserId, role);
-            if (patient == null)
-            {
-                _logger.LogWarning("Patient with ID {Id} not found", id);
-                return NotFound();
-            }
             try
             {
+                _logger.LogInformation("Getting appointments for patient ID: {Id}", id);
+                var loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                var role = User.FindFirst(ClaimTypes.Role)?.Value;
+
+                // Here it checks if the patient and medic are linked,
+                // if not it returns null ==> NotFound
                 var appointments = _patientService.GetAppointment(id, loggedInUserId, role);
+                if (appointments == null)
+                {
+                    _logger.LogWarning("Patient with ID {Id} not found", id);
+                    return NotFound();
+                }
                 _logger.LogInformation("Appointments retrieved for patient ID: {Id}", id);
                 return Ok(appointments);
+
             }
             catch (Exception ex)
             {
@@ -152,7 +156,7 @@ namespace MediTap.Api.Controllers
             _logger.LogInformation("Getting affections for patient ID: {Id}", id);
             var loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
-            var patient = _patientService.GetById(id, loggedInUserId, role);
+            var patient = _patientService.GetById(id,loggedInUserId, role);
             if (patient == null)
             {
                 _logger.LogWarning("Patient with ID {Id} not found", id);
@@ -181,7 +185,7 @@ namespace MediTap.Api.Controllers
             _logger.LogInformation("Getting medications for patient ID: {Id}", id);
             var loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
-            var patient = _patientService.GetById(id, loggedInUserId, role);
+            var patient = _patientService.GetById(id,loggedInUserId, role);
             if (patient == null)
             {
                 _logger.LogWarning("Patient with ID {Id} not found", id);
@@ -207,12 +211,12 @@ namespace MediTap.Api.Controllers
         // GET: api/patient/5/profile
         [Authorize(Roles = "Medic")]
         [HttpGet("{id}/profile")]
-        public ActionResult<IEnumerable<PatientSummaryDTO>> GetProfileSummary(int id)
+        public ActionResult<PatientSummaryDTO> GetProfileSummary(int id)
         {
             _logger.LogInformation("Getting profile summary for patient ID: {Id}", id);
             var loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
-            var patient = _patientService.GetById(id, loggedInUserId, role);
+            var patient = _patientService.GetById(id,loggedInUserId, role);
             if (patient == null)
             {
                 _logger.LogWarning("Patient with ID {Id} not found", id);
@@ -222,6 +226,11 @@ namespace MediTap.Api.Controllers
             {
                 var profileSummary = _patientService.GetProfileSummary(id);
                 return Ok(profileSummary);
+            }
+            catch (PatientNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "Patient not found when attempting to retrieve profile summary for patient ID: {Id}", id);
+                return NotFound();
             }
             catch (Exception ex)
             {
@@ -242,34 +251,36 @@ namespace MediTap.Api.Controllers
         // POST: api/patient/me/symptom
         [Authorize(Roles = "Patient")]
         [HttpPost("me/symptom")]
-        public ActionResult<SymptomDTO> CreateSymptom(SymptomDTO symptom)
+        public ActionResult<SymptomDTO> CreateSymptom(SymptomCreationDTO symptom)
         {
             var loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
-            _logger.LogInformation("Adding symptom for patient ID: {Id}, Symptom: {Symptom}", loggedInUserId, symptom);
-            var patient = _patientService.GetLoggedInPatient(loggedInUserId);
 
-            if (patient == null)
-            {
-                _logger.LogWarning("Patient with ID {Id} not found for symptom addition", loggedInUserId);
-                return NotFound();
-            }
 
             try
             {
+                // loggedInUserID must be equal to symptom.PatientId
                 var response = _patientService.AddSymptom(symptom, loggedInUserId, role);
-                if (response == null) {
+                if (response == null)
+                {
                     _logger.LogWarning("Failed to add symptom for patient ID: {Id}, Symptom: {Symptom}", loggedInUserId, symptom);
                     return NotFound();
                 }
+            
+                _logger.LogInformation("Symptom added for patient ID: {Id}, Symptom: {Symptom}", loggedInUserId, symptom);
+                return CreatedAtAction(nameof(GetMyProfile), null, response);
             }
+            catch(FutureDateException ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500,ex.Message);
+            }
+
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error adding symptom for patient ID: {Id}, Symptom: {Symptom}", loggedInUserId, symptom);
                 return StatusCode(500, "An error occurred while adding the symptom.");
             }
-            _logger.LogInformation("Symptom added for patient ID: {Id}, Symptom: {Symptom}", loggedInUserId, symptom);
-            return CreatedAtAction(nameof(GetMyProfile), null, symptom);
 
         }
 
@@ -298,42 +309,25 @@ namespace MediTap.Api.Controllers
                 _logger.LogInformation("Patient created successfully by user ID: {UserId}, Role: {Role}", userId, role);
                 return Ok(response);
             }
+
+
+            // Catches specific exceptions related to patient creation 
+            catch (InvalidPhoneNumberException ex)
+            {
+                _logger.LogError(ex, "Invalid phone number provided for patient creation by user ID: {UserId}, Role: {Role}", userId, role);
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidEmailException ex)
+            {
+                _logger.LogError(ex, "Invalid email provided for patient creation by user ID: {UserId}, Role: {Role}", userId, role);
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating patient by user ID: {UserId}, Role: {Role}", userId, role);
                 return StatusCode(500, "An error occurred while creating the patient.");
             }
         }
-        // THIS IS IMPLEMENTED IN THE 
-        // APPOINTMENT CONTROLLER
-
-        // Add an appointment
-        // POST: api/patient/5/appointment
-        //[HttpPost("{id}/appointment")]
-        //public IActionResult CreateAppointment(int id, Appointment appointment)
-        //{
-        //    // LOG
-        //    _logger.LogInformation("Adding appointment for patient ID: {Id}, Appointment: {Appointment}", id, appointment);
-
-        //    var patient = PatientService.GetById(id);
-
-        //    // LOG
-        //    _logger.LogInformation("Patient found for appointment addition: {Patient}", patient);
-
-        //    if (patient == null)
-        //    {
-        //        // LOG
-        //        _logger.LogWarning("Patient with ID {Id} not found for appointment addition", id);
-
-        //        return NotFound();
-        //    }
-        //    PatientService.AddAppointment(id, appointment);
-
-        //    // LOG
-        //    _logger.LogInformation("Appointment added for patient ID: {Id}, Appointment: {Appointment}", id, appointment);
-
-        //    return CreatedAtAction(nameof(GetById), new { id = id }, appointment);
-        //}
 
 
     }

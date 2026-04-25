@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MediTap.Api.Exceptions;
 //using MediTap.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
@@ -63,6 +64,16 @@ namespace MediTap.Api.Controllers
                 var response = _medicService.Create(request);
                 _logger.LogInformation("Medic profile created successfully for username: {Uname}", response.Uname);
                 return Ok(response);
+            }
+            catch (InvalidPhoneNumberException ex)
+            {
+                _logger.LogError(ex, "Invalid phone number provided for medic profile creation for username: {Uname}", request.FirstName);
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidEmailException ex)
+            {
+                _logger.LogError(ex, "Invalid email provided for medic profile creation for username: {Uname}", request.FirstName);
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {

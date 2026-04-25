@@ -1,6 +1,8 @@
 ﻿using MediTap.Api.DTO;
 using MediTap.Api.Models;
 using MediTap.Api.Services.Interfaces;
+using MediTap.Api.Exceptions;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace MediTap.Api.Services
 {
@@ -16,82 +18,267 @@ namespace MediTap.Api.Services
 
         Patient IPatientService.Create(PatientCreationDTO request)
         {
-            // Converts the PatientCreationDTO to a Patient entity
-            // // in order for it to be saved on the DB
-            var patient = new Patient(request.FirstName, new CNP(request.CNP), request.DateOfBirth, request.Password)
+            try
             {
-                LastName = request.LastName ?? string.Empty,
-                Email = request.Email != null ? new Email(request.Email) : null,
-                PhoneNumber = request.PhoneNumber != null ? new PhoneNumber(request.PhoneNumber) : null,
-                Address = request.Address ?? string.Empty,
-            };
-            _logger.LogInformation("Creating patient with CNP: {CNP}", patient.CNP.CodNumericPersonal);
+                // Converts the PatientCreationDTO to a Patient entity
+                // // in order for it to be saved on the DB
+                var patient = new Patient(request.FirstName, new CNP(request.CNP), request.DateOfBirth, request.Password)
+                {
+                    LastName = request.LastName ?? string.Empty,
+                    Email = request.Email != null ? new Email(request.Email) : null,
+                    PhoneNumber = request.PhoneNumber != null ? new PhoneNumber(request.PhoneNumber) : null,
+                    Address = request.Address ?? string.Empty,
+                };
+                _logger.LogInformation("Creating patient with CNP: {CNP}", patient.CNP.CodNumericPersonal);
 
 
-            // Validate the patient data before saving
+                // Validate the patient data before saving
 
-            // Check if CNP is unique
-            // TODO
+                // Check if CNP is unique
+                // TODO
 
 
-            // DoB needs to be in the past
-            if (patient.DateOfBirth > DateOnly.FromDateTime(DateTime.Now))
+                // DoB needs to be in the past
+                if (patient.DateOfBirth > DateOnly.FromDateTime(DateTime.Now))
+                {
+                    _logger.LogWarning("Attempt to create patient with future date of birth: {DateOfBirth}", patient.DateOfBirth);
+                    throw new Exception("Date of birth cannot be in the future.");
+                }
+
+                // CHeck if Uname is unique
+                if (_context.Patients.Any(p => p.Uname == patient.Uname))
+                {
+                    _logger.LogWarning("Attempt to create patient with existing username: {Username}", patient.Uname);
+                    throw new Exception("Username already exists.");
+                }
+
+
+                // If all validations pass, save the patient to the database
+                _logger.LogInformation("Patient with CNP: {CNP} passed uniqueness check. Proceeding to save.", patient.CNP.CodNumericPersonal);
+                _context.Patients.Add(patient);
+                _context.SaveChanges();
+
+                return patient;
+            }
+            catch (InvalidPhoneNumberException ex)
             {
-                _logger.LogWarning("Attempt to create patient with future date of birth: {DateOfBirth}", patient.DateOfBirth);
-                throw new Exception("Date of birth cannot be in the future.");
+                _logger.LogError(ex, "Invalid phone number provided for patient creation: {PhoneNumber}", request.PhoneNumber);
+                throw new InvalidPhoneNumberException("The phone number provided is not valid.");
+            }
+            catch (InvalidEmailException ex)
+            {
+                _logger.LogError(ex, "Invalid email provided for patient creation: {Email}", request.Email);
+                throw new InvalidEmailException("The Email address provided is not valid.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while creating a patient");
+                throw;
+            }
+        }
+
+
+        PatientDTO IPatientService.GetById(int id, int loggedInUserId, string role)
+        {
+            if (role != "Medic" ) { return null; }
+
+
+            try
+            {
+                // Gets the appointments that the Patient has with the 
+                // logged in Medic. This can be null
+                var appointments = _context.Appointments
+                    .Where(a => a.PatientId == id)
+                    .Where(a => a.MedicId == loggedInUserId)
+                    .Select(a => new AppointmentDTO(a));
+
+                // Selects the patient with the given ID and maps it to a PatientDTO,
+                // including the appointments with the logged in Medic
+                var patient = _context.Patients
+                    .Where(p => p.Id == id)
+                    .Where(p => p.Medics.Any(m => m.Id == loggedInUserId))
+                    .Select(p => new PatientDTO(p, appointments))
+                    .FirstOrDefault();
+
+
+                return patient;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while retrieving patient with ID: {Id} for medic with ID: {MedicId}", id, loggedInUserId);
+                throw;
             }
 
-            // CHeck if Uname is unique
-            if (_context.Patients.Any(p => p.Uname == patient.Uname))
+        }
+
+        PatientSummaryDTO IPatientService.GetProfileSummary(int id)
+        {
+            try
             {
-                _logger.LogWarning("Attempt to create patient with existing username: {Username}", patient.Uname);
-                throw new Exception("Username already exists.");
+                var patientSummary = _context.Patients
+                    .Where(p => p.Id == id)
+                    .Select(p => new PatientSummaryDTO(p))
+                    .FirstOrDefault();
+
+                if(patientSummary == null)
+                {
+                    _logger.LogWarning("Patient with ID {Id} not found when attempting to retrieve profile summary", id);
+                    throw new PatientNotFoundException(id);
+                }
+
+                _logger.LogInformation("Retrieved profile summary for patient with ID: {Id}", id);
+                return patientSummary;
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while retrieving profile summary for patient with ID: {Id}", id);
+                throw;
+            }
+        }
+
+
+        IEnumerable<SymptomDTO> IPatientService.GetSymptom(int id)
+        {
+            try
+            {
+                var symptom = _context.Symptoms
+                    .Where(s => s.PatientId == id)
+                    .AsEnumerable()
+                    .Select(s => new SymptomDTO(s))
+                    .ToList();
+
+                return symptom;
+
+            }
+            catch(Exception e)
+            {
+                _logger.LogWarning($"An error occured when trying to find symptoms for PatientId {id}", id);
+                throw;
             }
 
+        }
 
-            // If all validations pass, save the patient to the database
-            _logger.LogInformation("Patient with CNP: {CNP} passed uniqueness check. Proceeding to save.", patient.CNP.CodNumericPersonal);
-            _context.Patients.Add(patient);
-            _context.SaveChanges();
+        SymptomDTO IPatientService.AddSymptom(SymptomCreationDTO symptom, int loggedInUserId, string role)
+        {
+            try
+            {
+                // Checks if the loggedInUser is a PAtient
+                if(role != "Patient") 
+                {
+                    _logger.LogWarning("Trying to create symptom as a non-Patient.");
+                    return null; 
+                }
 
-            return patient;
+                // Checks if the pateint that has the symptom is the one that adds the symptom
+                if (symptom.PatientId != loggedInUserId) 
+                {
+                    _logger.LogWarning("Trying to create symptom for someone else.");
+                    return null; 
+                }
+
+                var now = DateTime.UtcNow;
+                // Sanity check on the dates
+
+                if (symptom.AddedTime.CompareTo(now) > 0)
+                {
+                    _logger.LogWarning($"Trying to add a symptom in the future, id {symptom.Id}");
+                    throw new FutureDateException();
+                }
+                if (symptom.StartOfSymptom.HasValue)
+                {
+                    if (symptom.StartOfSymptom.Value.CompareTo(DateOnly.FromDateTime(now)) > 0)
+                    {
+                        _logger.LogWarning($"Trying to add a symptom in the future, id {symptom.Id}");
+                        throw new FutureDateException();
+                    }
+                }
+
+                // The symptom is valid
+                // Time to map it to a actual Symptom Entity in the DB
+                // I do not map Id because thats automatically
+                var symptomEntity = new Symptom
+                {
+                    Name = symptom.Name,
+                    isChecked = symptom.isChecked,
+                    isPresent = symptom.isPresent,
+                    AddedDate = symptom.AddedTime,
+                    StartOfSymptoms = symptom.StartOfSymptom,
+                    Description = symptom.Description,
+
+                    PatientId = symptom.PatientId,
+                    MedicId = symptom.MedicId,
+
+                };
+
+
+                _context.Symptoms.Add(symptomEntity);
+                _context.SaveChanges();
+                return new SymptomDTO(symptomEntity);
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning("An error occured when creating a new symptom.");
+                throw;
+            }
+        }
+
+        IEnumerable<AppointmentDTO> IPatientService.GetAppointment(int id, int loggedInUserId, string role)
+        {
+            try
+            {
+                if(role != "Medic") { return null; }
+                var appointments = _context.Appointments
+                    .Where(a => a.PatientId == id && a.MedicId == loggedInUserId)
+                    .AsEnumerable()
+                    .Select(a => new AppointmentDTO(a))
+                    .ToList();
+                _logger.LogInformation($"Medic {loggedInUserId} got the appointments for Patient {id}.");
+                return appointments;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"An error occured when trying to show appointments for Pid {id} | Mid {loggedInUserId}.");
+                throw;
+            }
+        }
+
+        IEnumerable<MedicationDTO> IPatientService.GetMedication(int id)
+        {
+            try
+            {
+                var medication = _context.Medications
+                    .Where(m => m.PatientId == id)
+                    .AsEnumerable()
+                    .Select(m => new MedicationDTO(m))
+                    .ToList();
+                _logger.LogInformation($"Medication for Pid {id} retrieved.");
+                return medication;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Medication for Pid {id} could not be retrieved.");
+                throw;
+            }
         }
 
 
-        // TODO
-        Patient IPatientService.GetById(int id, int loggedInUserId, string role)
+        IEnumerable<AffectionDTO> IPatientService.GetAffection(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<PatientSummaryDTO> IPatientService.GetProfileSummary(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Symptom> IPatientService.GetSymptom(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        Patient IPatientService.AddSymptom(SymptomDTO symptom, int patientId, string role)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Appointment> IPatientService.GetAppointment(int id, int loggedInUserId, string role)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Medication> IPatientService.GetMedication(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Affection> IPatientService.GetAffection(int id)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                var affection = _context.Affections
+                    .Where(m => m.PatientId == id)
+                    .AsEnumerable()
+                    .Select(a => new  AffectionDTO(a))
+                    .ToList();
+                _logger.LogInformation($"Affections for Pid {id} retrieved.");
+                return affection;
+            }
+            catch
+            {
+                _logger.LogError($"An error occured when trying to get affections for Pid {id}");
+                throw;
+            }
         }
 
         public PatientDTO GetLoggedInPatient(int id)

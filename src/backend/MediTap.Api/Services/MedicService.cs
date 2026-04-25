@@ -1,5 +1,6 @@
 ﻿using MediTap.Api.DTO;
 using MediTap.Api.Models;
+using MediTap.Api.Exceptions;
 using MediTap.Api.Services.Interfaces;
 namespace MediTap.Api.Services
 {
@@ -17,22 +18,40 @@ namespace MediTap.Api.Services
 
         Medic IMedicService.Create(MedicCreationDTO request)
         {
-            var medic = new Medic(request.FirstName, request.Specialty, request.Password, request.MedicStatus)
+            try
             {
-                LastName = request.LastName ?? string.Empty,
-                Email = request.Email != null ? new Email(request.Email) : null,
-                PhoneNumber = request.PhoneNumber != null ? new PhoneNumber(request.PhoneNumber) : null
-            };
+                var medic = new Medic(request.FirstName, request.Specialty, request.Password, request.MedicStatus)
+                {
+                    LastName = request.LastName ?? string.Empty,
+                    Email = request.Email != null ? new Email(request.Email) : null,
+                    PhoneNumber = request.PhoneNumber != null ? new PhoneNumber(request.PhoneNumber) : null
+                };
+                if (_context.Medics.Any(m => m.Uname == medic.Uname))
+                {
+                    _logger.LogError("Attempt to create a medic with an existing username: {Uname}", medic.Uname);
+                    return null;
+                }
 
-            if(_context.Medics.Any(m => m.Uname == medic.Uname))
-            {
-                _logger.LogError("Attempt to create a medic with an existing username: {Uname}", medic.Uname);
-                return null;
+                _context.Medics.Add(medic);
+                _context.SaveChanges();
+                return medic;
             }
+            catch (InvalidPhoneNumberException ex){
+                _logger.LogError(ex, "Invalid phone number provided for medic creation: {PhoneNumber}", request.PhoneNumber);
+                throw;
 
-            _context.Medics.Add(medic);
-            _context.SaveChanges();
-            return medic;
+            }
+            catch (InvalidEmailException ex)
+            {
+                _logger.LogError(ex, "Invalid email provided for medic creation: {Email}", request.Email);
+                throw;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while creating a medic");
+                throw;
+            }
         }
 
         MedicSummaryDTO IMedicService.GetById(int id)
