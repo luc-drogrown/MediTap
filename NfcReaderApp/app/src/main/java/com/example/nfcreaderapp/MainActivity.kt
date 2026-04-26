@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var textView: TextView
     private lateinit var editText: android.widget.EditText
     private lateinit var writeButton: android.widget.Button
-    private val serverUrl = "http://172.27.139.138:5115/Nfc/Scan"
+    private val serverUrl = "htt
     private var writeMode = false
     private var currentTag: Tag? = null
 
