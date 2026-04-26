@@ -43,6 +43,11 @@ namespace MediTap.Api.DTO
             Medications = p.Medications?.Select(m => new MedicationDTO(m)) ?? Enumerable.Empty<MedicationDTO>();
         }
 
+        public PatientDTO()
+        {
+            
+        }
+
 
     }
 }

@@ -3,6 +3,7 @@ using MediTap.Api.Models;
 using MediTap.Api.Services.Interfaces;
 using MediTap.Api.Exceptions;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.EntityFrameworkCore;
 
 namespace MediTap.Api.Services
 {
@@ -90,14 +91,38 @@ namespace MediTap.Api.Services
                 var appointments = _context.Appointments
                     .Where(a => a.PatientId == id)
                     .Where(a => a.MedicId == loggedInUserId)
-                    .Select(a => new AppointmentDTO(a));
+                    .Select(a => new AppointmentDTO(a))
+                    .ToList();
+                
 
                 // Selects the patient with the given ID and maps it to a PatientDTO,
                 // including the appointments with the logged in Medic
+
                 var patient = _context.Patients
                     .Where(p => p.Id == id)
                     .Where(p => p.Medics.Any(m => m.Id == loggedInUserId))
-                    .Select(p => new PatientDTO(p, appointments))
+                    .Select(p => new PatientDTO
+                    {
+                        PatientSummary = new PatientSummaryDTO
+                        {
+                            Id = p.Id,
+                            FirstName = p.FirstName,
+                            CNP = p.CNP.CodNumericPersonal,
+                            LastName = p.LastName ?? string.Empty,
+                            Email = p.Email != null ? p.Email.EmailAddress : null,
+                            PhoneNumber = p.PhoneNumber != null ? p.PhoneNumber.Number : null,
+                        },
+
+                        // These are already a DTO
+                        Appointments = appointments,
+
+                        // If there are no symptoms => return an empty enumerable
+                        // else convert them into a DTO
+                        Symptoms = p.Symptoms != null ? p.Symptoms.Select(s => new SymptomDTO(s)) : Enumerable.Empty<SymptomDTO>(),
+                        Affections = p.Affections != null ? p.Affections.Select(a => new AffectionDTO(a)) : Enumerable.Empty<AffectionDTO>(),
+                        Medications = p.Medications != null ? p.Medications.Select(m => new MedicationDTO(m)) : Enumerable.Empty<MedicationDTO>(),
+
+                    })
                     .FirstOrDefault();
 
 
@@ -169,26 +194,19 @@ namespace MediTap.Api.Services
                     return null; 
                 }
 
-                // Checks if the pateint that has the symptom is the one that adds the symptom
-                if (symptom.PatientId != loggedInUserId) 
-                {
-                    _logger.LogWarning("Trying to create symptom for someone else.");
-                    return null; 
-                }
-
                 var now = DateTime.UtcNow;
                 // Sanity check on the dates
 
                 if (symptom.AddedTime.CompareTo(now) > 0)
                 {
-                    _logger.LogWarning($"Trying to add a symptom in the future, id {symptom.Id}");
+                    _logger.LogWarning($"Trying to add a symptom in the future");
                     throw new FutureDateException();
                 }
                 if (symptom.StartOfSymptom.HasValue)
                 {
                     if (symptom.StartOfSymptom.Value.CompareTo(DateOnly.FromDateTime(now)) > 0)
                     {
-                        _logger.LogWarning($"Trying to add a symptom in the future, id {symptom.Id}");
+                        _logger.LogWarning($"Trying to add a symptom in the future, id");
                         throw new FutureDateException();
                     }
                 }
@@ -199,14 +217,15 @@ namespace MediTap.Api.Services
                 var symptomEntity = new Symptom
                 {
                     Name = symptom.Name,
-                    isChecked = symptom.isChecked,
-                    isPresent = symptom.isPresent,
+                    isChecked = false,
+                    isPresent = true,
                     AddedDate = symptom.AddedTime,
                     StartOfSymptoms = symptom.StartOfSymptom,
                     Description = symptom.Description,
 
-                    PatientId = symptom.PatientId,
-                    MedicId = symptom.MedicId,
+                    // take this Id from the loggedInUser
+                    PatientId = loggedInUserId,
+                    //MedicId = symptom.MedicId != null ? symptom.MedicId : null,
 
                 };
 
@@ -281,9 +300,15 @@ namespace MediTap.Api.Services
             }
         }
 
+
+
         public PatientDTO GetLoggedInPatient(int id)
         {
             var patient = _context.Patients
+                .Include(p => p.Medications)
+                .Include(p => p.Affections)
+                .Include(p => p.Symptoms)
+                .Include(p => p.Appointments)
                 .Where(p => p.Id == id)
                 .Select(p => new PatientDTO(p))
                 .FirstOrDefault();

@@ -24,5 +24,10 @@ namespace MediTap.Api.DTO
             Email = p.Email?.EmailAddress;
             PhoneNumber = p.PhoneNumber?.Number;
         }
+
+        public PatientSummaryDTO()
+        {
+            
+        }
     }
 }

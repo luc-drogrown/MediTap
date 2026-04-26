@@ -3,6 +3,8 @@ using MediTap.Api.DTO;
 using MediTap.Api.Models;
 namespace MediTap.Api.Services.Interfaces
 {
+    //@TODO
+    //Write documentation for the methods
     public interface IPatientService
     {
         Patient Create(PatientCreationDTO request);
@@ -18,6 +20,7 @@ namespace MediTap.Api.Services.Interfaces
         /// to check if the patient is linked with them.
         /// If it is NOT it returns null
         /// </summary>
+        /// <remarks>THIS METHOD NEEDS TO BE REDONE</remarks>
         /// <param name="loggedInUserId">
         /// Id of the Medic taht calls this method</param>
         /// <param name="role">
@@ -27,7 +30,13 @@ namespace MediTap.Api.Services.Interfaces
         PatientDTO GetById(int id, int loggedInUserId, string role);
 
 
-
+        /// <summary>
+        /// Adds a symptom to the current Patient's list of symptoms. 
+        /// </summary>
+        /// <param name="symptom">The Symptom that it need to be added</param>
+        /// <param name="loggedInUserId">The current user logged in</param>
+        /// <param name="role">It must be a Patient</param>
+        /// <returns></returns>
         SymptomDTO AddSymptom(SymptomCreationDTO symptom, int loggedInUserId, string role);
     }
 }

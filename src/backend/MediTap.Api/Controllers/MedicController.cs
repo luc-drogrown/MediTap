@@ -14,10 +14,12 @@ namespace MediTap.Api.Controllers
     {
         private readonly ILogger<MedicController> _logger;
         private readonly IMedicService _medicService;
-        public MedicController(ILogger<MedicController> logger, IMedicService medicService)
+        private readonly IPatientService _patientService;
+        public MedicController(ILogger<MedicController> logger, IMedicService medicService, IPatientService patientService)
         {
             _logger = logger;
             _medicService = medicService;
+            _patientService = patientService;
         }
 
         // Get the profile of the logged-in medic
@@ -80,6 +82,34 @@ namespace MediTap.Api.Controllers
                 _logger.LogError(ex, "Error creating medic profile for username: {Uname}", request.FirstName);
                 return BadRequest(ex.Message);
             }
+        }
+
+
+        // Scan a Patient's card and link current MedicId to that PatientID
+        // Returns a Patient Summary
+        [Authorize(Roles = "Medic")]
+        [HttpPost("me/scan")]
+        public IActionResult Scan([FromBody] PatientScanDTO request)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            try
+            {
+                var response = _medicService.Scan(request, userId, role);
+                if(response == null)
+                {
+                    _logger.LogInformation($"");
+                    return NotFound();
+                }
+                _logger.LogInformation($"");
+                return Ok(response);
+            }
+            catch
+            {
+                _logger.LogError($"");
+                throw;
+            }
+
         }
 
         // ---------------------------------------------------------------------//

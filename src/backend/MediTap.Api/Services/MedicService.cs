@@ -2,9 +2,10 @@
 using MediTap.Api.Models;
 using MediTap.Api.Exceptions;
 using MediTap.Api.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 namespace MediTap.Api.Services
 {
-    // DONE
     public class MedicService : IMedicService
     {
 
@@ -36,7 +37,8 @@ namespace MediTap.Api.Services
                 _context.SaveChanges();
                 return medic;
             }
-            catch (InvalidPhoneNumberException ex){
+            catch (InvalidPhoneNumberException ex)
+            {
                 _logger.LogError(ex, "Invalid phone number provided for medic creation: {PhoneNumber}", request.PhoneNumber);
                 throw;
 
@@ -56,9 +58,13 @@ namespace MediTap.Api.Services
 
         MedicSummaryDTO IMedicService.GetById(int id)
         {
-            var medic = _context.Medics.Find(id);
+            var medic = _context.Medics
+                .Include(m => m.Patients)
+                .Include(m => m.Appointments)
+                .FirstOrDefault(m => m.Id == id);
 
-            if(medic == null)
+
+            if (medic == null)
             {
                 _logger.LogWarning("Medic with ID {Id} not found", id);
                 return null;
@@ -69,6 +75,73 @@ namespace MediTap.Api.Services
             var medicDTO = new MedicSummaryDTO(medic);
 
             return medicDTO;
+        }
+
+
+        PatientSummaryDTO IMedicService.Scan(PatientScanDTO request, int loggedInUserId, string role)
+        {
+            _logger.LogInformation("Scan initiated by UserId: {UserId} with Role: '{Role}' for Target PatientId: {PatientId}", loggedInUserId, role, request.Id);
+            if (role != "Medic")
+            {
+                _logger.LogWarning("Scan rejected. UserId: {UserId} attempted a scan but is not a Medic.", loggedInUserId);
+                return null;
+            }
+
+
+            try
+            {
+                _logger.LogInformation("Querying database for PatientId: {PatientId} using scan card credentials...", request.Id);
+                // Try to find the patient from the Card informations
+                var patient = _context.Patients
+                    .Where(p => p.Id == request.Id)
+                    .Where(p => p.Uname == request.Uname)
+                    .Where(p => p.PasswordHash == request.PasswordHashed)
+                    .FirstOrDefault();
+
+                // Patient doesn't exist in the DB
+                if (patient == null)
+                {
+                    _logger.LogWarning("Scan failed. No matching patient found for PatientId: {PatientId} with the provided Uname and PasswordHash.", request.Id);
+                    return null;
+                }
+
+                // Link Patient with the Medic
+                _logger.LogInformation("PatientId: {PatientId} successfully found and authenticated. Fetching Medic profile...", patient.Id);
+                // Finding the Medic that is logged in
+                // and including the Patients collumn 
+                var medic = _context.Medics
+                    .Include(m => m.Patients)
+                    .FirstOrDefault(m => m.Id == loggedInUserId);
+
+                // TODO
+                // Check if Medic is null and throw custom exception then catch it in the controller
+
+                // They are already linked
+                if (medic.Patients.Any(p => p.Id == request.Id))
+                {
+                    _logger.LogInformation("Link already exists between PatientId: {PatientId} and MedicId: {MedicId}...", patient.Id, medic.Id);
+                    return new PatientSummaryDTO(patient);
+                }
+
+                else
+                {
+                    _logger.LogInformation("No existing link found. Linking PatientId: {PatientId} to MedicId: {MedicId} now...", patient.Id, medic.Id);
+                    medic.Patients.Add(patient);
+                    _context.SaveChanges();
+
+                    _logger.LogInformation("Successfully saved new link between PatientId: {PatientId} and MedicId: {MedicId}.", patient.Id, medic.Id);
+                    return new PatientSummaryDTO(patient);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                {
+                    _logger.LogError(ex, "A fatal exception occurred during the scan process for MedicId: {MedicId} scanning PatientId: {PatientId}", loggedInUserId, request.Id);
+
+                    throw;
+                }
+            }
         }
     }
 }

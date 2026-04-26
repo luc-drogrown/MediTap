@@ -14,7 +14,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Adding the Database connection
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<MediTapDbContext>(options => options.UseNpgsql(connString));
+builder.Services.AddDbContext<MediTapDbContext>(options => options.UseNpgsql(connString,
+   
+    // This enables retry on ded connections
+    npgsqlOptionsAction: sqlOptions =>
+    {
+        sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 3,
+            maxRetryDelay: TimeSpan.FromSeconds(2),
+            errorCodesToAdd: null);
+    }
+));
 
 // Adding the services
 builder.Services.AddScoped<IMedicService, MedicService>();
