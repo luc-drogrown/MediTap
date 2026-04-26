@@ -15,7 +15,6 @@
         public string? LastName { get; set; }
         public Email? Email { get; set; }
 
-        //TODO add a phone number class and exceptions for invalid phone numbers
         public PhoneNumber? PhoneNumber { get; set; }
         public string? Address { get; set; }
 
@@ -54,7 +53,7 @@
             this.DateOfBirth = dateOfBirth;
             this.CNP = cnp;
 
-            this.Uname = "P-" + this.FirstName + "-" + this.CNP.ToString().Substring(0,4) + "-" + Guid.NewGuid().ToString().Substring(0, 8);
+            this.Uname = "P-" + this.FirstName + "-" + this.CNP.CodNumericPersonal.ToString().Substring(0,4) + "-" + Guid.NewGuid().ToString().Substring(0, 8);
         }
 
         private Patient()
