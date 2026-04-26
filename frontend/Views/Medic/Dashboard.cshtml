@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <img src="~/images/logo.png" alt="MediTap Logo" class="sidebar-logo" />
+            <span>MediTap</span>
+        </div>
+
+        <a class="sidebar-link active" href="/Medic/Dashboard">Overview</a>
+        <a class="sidebar-link" href="/Medic/Scan">Scan Card</a>
+        <a class="sidebar-link logout" href="/">Logout</a>
+    </aside>
+
+    <main class="dashboard-content">
+        <h1>Medic Dashboard</h1>
+        <p>Welcome back. Choose an action to continue.</p>
+
+        <a class="btn btn-primary" href="/Medic/Scan">
+            Scan Patient Card
+        </a>
+    </main>
+</div>

@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Patient Login";
+}
+
+<div class="login-card login-form-card">
+
+    <img src="~/images/logo.png" alt="MediTap Logo" class="logo" />
+    <h1>Patient Login</h1>
+
+    <form asp-controller="Patient" asp-action="LoginSubmit" method="post">
+        
+        <div class="form-group">
+            <label>Username or Email</label>
+            <input type="text" name="uname"/>
+        </div>
+
+        <div class="form-group password-group">
+            <label>Password</label>
+
+            <div class="password-wrapper">
+                <input type="password" id="passwordInput" name="password"/>
+                <button type="button" id="togglePassword">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </div>
+        </div>
+
+        <a href="#" class="forgot-password">
+            Forgot password?
+        </a>
+
+        <button type="submit" class="btn btn-primary">
+            Login
+        </button>
+
+    </form>
+
+    <a class="btn btn-success login-back-btn" href="/">
+        Back to role selection
+    </a>
+
+</div>
+
+<script>
+    const passwordInput = document.getElementById("passwordInput");
+    const toggleButton = document.getElementById("togglePassword");
+    const icon = toggleButton.querySelector("i");
+
+    toggleButton.addEventListener("click", function () {
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
+        } else {
+            passwordInput.type = "password";
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+        }
+    });
+</script>

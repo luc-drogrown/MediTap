@@ -1,0 +1,67 @@
+is_global = true
+build_property.TargetFramework = net10.0
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v10.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = MediTap.Front
+build_property.RootNamespace = MediTap.Front
+build_property.ProjectDir = C:\Users\draga\Documents\College\Year 3\Sem 2\Industrial Informatics\Project\Integration testing\MediTap-FullStack\frontend\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\draga\Documents\College\Year 3\Sem 2\Industrial Informatics\Project\Integration testing\MediTap-FullStack\frontend
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 10.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/draga/Documents/College/Year 3/Sem 2/Industrial Informatics/Project/Integration testing/MediTap-FullStack/frontend/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/draga/Documents/College/Year 3/Sem 2/Industrial Informatics/Project/Integration testing/MediTap-FullStack/frontend/Views/Medic/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVkaWNcRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/draga/Documents/College/Year 3/Sem 2/Industrial Informatics/Project/Integration testing/MediTap-FullStack/frontend/Views/Medic/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVkaWNcTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/draga/Documents/College/Year 3/Sem 2/Industrial Informatics/Project/Integration testing/MediTap-FullStack/frontend/Views/Medic/Scan.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVkaWNcU2Nhbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/draga/Documents/College/Year 3/Sem 2/Industrial Informatics/Project/Integration testing/MediTap-FullStack/frontend/Views/Patient/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0aWVudFxEYXNoYm9hcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/draga/Documents/College/Year 3/Sem 2/Industrial Informatics/Project/Integration testing/MediTap-FullStack/frontend/Views/Patient/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0aWVudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/draga/Documents/College/Year 3/Sem 2/Industrial Informatics/Project/Integration testing/MediTap-FullStack/frontend/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/draga/Documents/College/Year 3/Sem 2/Industrial Informatics/Project/Integration testing/MediTap-FullStack/frontend/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/draga/Documents/College/Year 3/Sem 2/Industrial Informatics/Project/Integration testing/MediTap-FullStack/frontend/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/draga/Documents/College/Year 3/Sem 2/Industrial Informatics/Project/Integration testing/MediTap-FullStack/frontend/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/draga/Documents/College/Year 3/Sem 2/Industrial Informatics/Project/Integration testing/MediTap-FullStack/frontend/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-xslj6i5bf8

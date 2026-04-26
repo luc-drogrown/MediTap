@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Card Scan";
+}
+
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <img src="~/images/logo.png" alt="MediTap Logo" class="sidebar-logo" />
+            <span>MediTap</span>
+        </div>
+
+        <a class="sidebar-link" href="/Medic/Dashboard">Overview</a>
+        <a class="sidebar-link active" href="/Medic/Scan">Scan Card</a>
+        <a class="sidebar-link logout" href="/">Logout</a>
+    </aside>
+
+    <main class="dashboard-content">
+        <h1>Scan Patient Card</h1>
+        <div class="scan-box">
+            <i class="bi bi-credit-card-2-front"></i>
+            <p id="scanStatus">Waiting for card scan...</p>
+            <small id="scanHelper">Hold the NFC card near the reader for a few seconds</small>
+            <a id="openProfileBtn"
+                   class="btn btn-primary scan-profile-btn"
+                   href="#"
+                   style="display: none;">
+                Open Patient Profile
+            </a>
+        </div>
+    </main>
+</div>
+
+<script>
+    const scanStatus = document.getElementById("scanStatus");
+    const scanHelper = document.getElementById("scanHelper");
+    const openProfileBtn = document.getElementById("openProfileBtn");
+
+    fetch("/Nfc/StartScan", {
+        method: "POST"
+    });
+
+    setInterval(async () => {
+        const response = await fetch("/Nfc/GetLatestScan");
+        console.log(response.status);
+
+        if (response.status === 200) {
+            const data = await response.json();
+
+            scanStatus.textContent = `Patient found: ${data.patientId}`;
+            scanHelper.textContent = "Card successfully scanned.";
+
+            openProfileBtn.style.display = "block";
+            openProfileBtn.href = `/Patient/Profile/${data.patientId}`;
+        }
+    }, 1000);
+
+    window.addEventListener("beforeunload", () => {
+        fetch("/Nfc/StopScan", {
+            method: "POST"
+        });
+    });
+</script>
