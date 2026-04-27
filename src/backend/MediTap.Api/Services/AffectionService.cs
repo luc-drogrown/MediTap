@@ -70,7 +70,7 @@ namespace MediTap.Api.Services
             try
             {
                 var isAuth = _context.Affections
-                    .Any(a => a.Id == id && a.MedicId == userId);
+                    .Any(a => a.Id == id && a.Patient.Medics.Any(m => m.Id == userId));
 
                 return isAuth;
             }

@@ -22,7 +22,7 @@ namespace MediTap.Api.Services.Interfaces
         AffectionDTO Add(AffectionCreationDTO affection, int userId);
 
         /// <summary>
-        /// Only the user that created the Affection can modify it.
+        /// Every medic associated with the patient can modify a Affection
         /// </summary>
         /// <param name="id">Id of the Affection</param>
         /// <param name="userId">Id of the user trying to get authentification</param>
