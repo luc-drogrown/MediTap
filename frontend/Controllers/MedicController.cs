@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace MediTapFRONT.Controllers
+namespace MediTap.Front.Controllers
 {
     public class MedicController : Controller
     {
@@ -46,6 +46,12 @@ namespace MediTapFRONT.Controllers
 
             HttpContext.Session.SetString("JwtToken", result.Token);
             HttpContext.Session.SetString("Role", result.Role);
+            HttpContext.Session.SetInt32("UserId", result.Id);
+
+            if (result.Id == 1)
+            {
+                return RedirectToAction("Dashboard", "Admin");
+            }
 
             return RedirectToAction("Dashboard");
         }
@@ -63,6 +69,7 @@ namespace MediTapFRONT.Controllers
 
     public class LoginResponse
     {
+        public int Id { get; set; }
         public string Token { get; set; }
         public string Role { get; set; }
     }

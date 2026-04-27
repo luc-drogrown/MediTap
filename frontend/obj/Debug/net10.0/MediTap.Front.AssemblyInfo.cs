@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MediTap.Front")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a94466b78c04afa47398910c00b1ab87da72f5fd")]
 [assembly: System.Reflection.AssemblyProductAttribute("MediTap.Front")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MediTap.Front")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

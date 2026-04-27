@@ -2621,23 +2621,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\draga\\.nuget\\packages\\": {},
+    "C:\\Users\\rares\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\draga\\Documents\\College\\Year 3\\Sem 2\\Industrial Informatics\\Project\\Integration testing\\MediTap-FullStack\\backend\\MediTap.Api\\MediTap.Api.csproj",
+      "projectUniqueName": "C:\\Facultate\\Facultate\\Projects\\MediTapFULLSTACK\\backend\\MediTap.Api\\MediTap.Api.csproj",
       "projectName": "MediTap.Api",
-      "projectPath": "C:\\Users\\draga\\Documents\\College\\Year 3\\Sem 2\\Industrial Informatics\\Project\\Integration testing\\MediTap-FullStack\\backend\\MediTap.Api\\MediTap.Api.csproj",
-      "packagesPath": "C:\\Users\\draga\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\draga\\Documents\\College\\Year 3\\Sem 2\\Industrial Informatics\\Project\\Integration testing\\MediTap-FullStack\\backend\\MediTap.Api\\obj\\",
+      "projectPath": "C:\\Facultate\\Facultate\\Projects\\MediTapFULLSTACK\\backend\\MediTap.Api\\MediTap.Api.csproj",
+      "packagesPath": "C:\\Users\\rares\\.nuget\\packages\\",
+      "outputPath": "C:\\Facultate\\Facultate\\Projects\\MediTapFULLSTACK\\backend\\MediTap.Api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\draga\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\rares\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -2650,7 +2650,6 @@
       },
       "frameworks": {
         "net10.0": {
-          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {}
         }
@@ -2669,7 +2668,6 @@
     },
     "frameworks": {
       "net10.0": {
-        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
           "BCrypt.Net-Next": {
@@ -2718,7 +2716,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.202/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

@@ -1164,10 +1164,7 @@
             "$ref": "#/components/schemas/MedicStatus"
           },
           "lastName": {
-            "type": [
-              "null",
-              "string"
-            ]
+            "type": "string"
           },
           "email": {
             "oneOf": [
@@ -1428,10 +1425,7 @@
             "type": "string"
           },
           "lastName": {
-            "type": [
-              "null",
-              "string"
-            ]
+            "type": "string"
           },
           "email": {
             "oneOf": [
