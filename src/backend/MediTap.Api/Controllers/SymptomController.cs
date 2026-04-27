@@ -60,8 +60,7 @@ namespace MediTap.Api.Controllers
 
             // Let the services check if the symptom exist and if the patient is the owner of the symptom
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var role = User.FindFirst(ClaimTypes.Role)?.Value;
-            var authCheck = _symptomService.GetByIdIfAuthorized(id, userId, role);
+            var authCheck = _symptomService.GetByIdIfAuthorized(id, userId);
             if (!authCheck)
             {
                 _logger.LogWarning("Symptom with ID {Id} not found", id);
@@ -97,9 +96,8 @@ namespace MediTap.Api.Controllers
             // Let the services check if the symptom exist and if the patient is the owner of the symptom
             _logger.LogInformation("Deleting Symptom with ID: {Id}", id);
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var role = User.FindFirst(ClaimTypes.Role)?.Value;
-            var symptom = _symptomService.GetByIdIfAuthorized(id, userId, role);
-            if (symptom == null)
+            var authCheck = _symptomService.GetByIdIfAuthorized(id, userId);
+            if (!authCheck)
             {
                 _logger.LogWarning("Symptom with ID {Id} not found", id);
                 return NotFound();

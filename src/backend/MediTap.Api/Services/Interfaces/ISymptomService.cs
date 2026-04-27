@@ -9,9 +9,8 @@ namespace MediTap.Api.Services.Interfaces
         /// </summary>
         /// <param name="id">Id of the Symptom</param>
         /// <param name="userId">Id of the user trying to access the Symptom</param>
-        /// <param name="role">Role of the user trying to access the Symptom </param>
         /// <returns>Returns <![CDATA[true]]> if user is authorized, <![CDATA[false]]> otherwise</returns>
-        bool GetByIdIfAuthorized(int id, int userId, string role);
+        bool GetByIdIfAuthorized(int id, int userId);
 
         /// <summary>
         /// Updates the details of an existing symptom using the specified data transfer object.

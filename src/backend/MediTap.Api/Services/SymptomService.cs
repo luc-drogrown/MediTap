@@ -32,12 +32,11 @@ namespace MediTap.Api.Services
             
         }
 
-        bool ISymptomService.GetByIdIfAuthorized(int id, int userId, string role)
+        bool ISymptomService.GetByIdIfAuthorized(int id, int userId)
         {
-            if(role != "Patient") { return false; }
 
-            else
-            {
+            
+            
                 try
                 {
                     var symptom = _context.Symptoms
@@ -51,7 +50,7 @@ namespace MediTap.Api.Services
                     _logger.LogError(ex.Message);
                     throw;
                 }
-            }
+            
 
         }
 
