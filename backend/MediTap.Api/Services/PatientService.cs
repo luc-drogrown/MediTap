@@ -25,7 +25,7 @@ namespace MediTap.Api.Services
                 // // in order for it to be saved on the DB
                 var patient = new Patient(request.FirstName, new CNP(request.CNP), request.DateOfBirth, request.Password)
                 {
-                    LastName = request.LastName ?? string.Empty,
+                    LastName = request.LastName,
                     Email = request.Email != null ? new Email(request.Email) : null,
                     PhoneNumber = request.PhoneNumber != null ? new PhoneNumber(request.PhoneNumber) : null,
                     Address = request.Address ?? string.Empty,
@@ -35,22 +35,26 @@ namespace MediTap.Api.Services
 
                 // Validate the patient data before saving
 
-                // Check if CNP is unique
-                // TODO
-
 
                 // DoB needs to be in the past
                 if (patient.DateOfBirth > DateOnly.FromDateTime(DateTime.Now))
                 {
                     _logger.LogWarning("Attempt to create patient with future date of birth: {DateOfBirth}", patient.DateOfBirth);
-                    throw new Exception("Date of birth cannot be in the future.");
+                    throw new FutureDateException();
                 }
 
                 // CHeck if Uname is unique
                 if (_context.Patients.Any(p => p.Uname == patient.Uname))
                 {
-                    _logger.LogWarning("Attempt to create patient with existing username: {Username}", patient.Uname);
-                    throw new Exception("Username already exists.");
+                    _logger.LogWarning($"Attempt to create patient with existing username: {patient.Uname}");
+                    throw new UnameAlreadyExistsException();
+                }
+
+                // Check if CNP is unique
+                if(_context.Patients.Any(p => p.CNP == patient.CNP))
+                {
+                    _logger.LogWarning($"Attempt to create patient with existing CNP: {patient.CNP.CodNumericPersonal}");
+                    throw new CNPAlreadyExistsException();
                 }
 
 
@@ -70,6 +74,11 @@ namespace MediTap.Api.Services
             {
                 _logger.LogError(ex, "Invalid email provided for patient creation: {Email}", request.Email);
                 throw new InvalidEmailException("The Email address provided is not valid.");
+            }
+            catch(InvalidCNPException ex)
+            {
+                _logger.LogError(ex, "Invalid CNP provided for patient creation: {CNP}", request.CNP);
+                throw new InvalidCNPException("CNP provided is not valid.");
             }
             catch (Exception ex)
             {
@@ -108,7 +117,7 @@ namespace MediTap.Api.Services
                             Id = p.Id,
                             FirstName = p.FirstName,
                             CNP = p.CNP.CodNumericPersonal,
-                            LastName = p.LastName ?? string.Empty,
+                            LastName = p.LastName,
                             Email = p.Email != null ? p.Email.EmailAddress : null,
                             PhoneNumber = p.PhoneNumber != null ? p.PhoneNumber.Number : null,
                         },

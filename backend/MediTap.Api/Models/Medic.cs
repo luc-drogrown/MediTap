@@ -9,6 +9,7 @@
         public int Id { get; set; }
 
         public string FirstName { get; set; }
+        public string LastName { get; set; }
 
         public string Specialty { get; set; }
 
@@ -23,7 +24,6 @@
 
 
         // Non mandatory info about the medic
-        public string LastName { get; set; }
         public Email? Email { get; set; }
         public PhoneNumber? PhoneNumber { get; set; }
 

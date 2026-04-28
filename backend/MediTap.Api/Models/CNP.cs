@@ -26,6 +26,9 @@ namespace MediTap.Api.Models
 
         // Method to check if a CNP is valid or not
         private bool checkCNPValidity(string cnp) {
+            
+            if(cnp.Length != 13) { return false; }
+
             var CNP_Constant = "279146358279";
             double sum = 0;
             for (int i = 0; i < 12; i++)
@@ -48,6 +51,10 @@ namespace MediTap.Api.Models
             return foundControlDigit == controlDigit; 
         
         }
+
+        // TODO -> override object.Equals so that two CNP's are equal if their string property is the same
+
+
 
     }
 }

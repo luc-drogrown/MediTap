@@ -7,6 +7,8 @@
         public DateOnly DateOfBirth { get; set;}
         public CNP CNP { get; set; }
         public string FirstName { get; set; }
+        public string LastName { get; set; }
+
 
         public string Uname { get; private set; }
         public string PasswordHash { get; set; }
@@ -14,7 +16,6 @@
         public string LastName { get; set; }
 
         /// Non essential info about the patient
-       
         public Email? Email { get; set; }
 
         //TODO add a phone number class and exceptions for invalid phone numbers
@@ -56,7 +57,7 @@
             this.DateOfBirth = dateOfBirth;
             this.CNP = cnp;
 
-            this.Uname = "P-" + this.FirstName + "-" + this.CNP.ToString().Substring(0,4) + "-" + Guid.NewGuid().ToString().Substring(0, 8);
+            this.Uname = "P-" + this.FirstName + "-" + this.CNP.CodNumericPersonal.ToString().Substring(0,4) + "-" + Guid.NewGuid().ToString().Substring(0, 8);
         }
 
         private Patient()
