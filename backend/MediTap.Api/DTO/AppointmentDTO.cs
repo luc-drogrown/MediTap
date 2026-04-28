@@ -14,14 +14,14 @@ namespace MediTap.Api.DTO
         public int MedicId { get; set; }
         public string MedicFirstName { get; set; }
         public string MedicSpecialty { get; set; }
-        public string? MedicLastName { get; set; }
+        public string MedicLastName { get; set; }
         public string? MedicPhoneNumber { get; set; }
         public string? MedicEmail { get; set; }
 
 
         public int PatientId { get; set; }
         public string PatientFirstName { get; set; }
-        public string? PatientLastName { get; set; }
+        public string PatientLastName { get; set; }
         public string PatientPhoneNumber { get; set; }
         public string PatientEmail { get; set; }
 
@@ -38,7 +38,7 @@ namespace MediTap.Api.DTO
             // Patient entity props
             PatientId = a.PatientId;
             PatientFirstName = a.Patient.FirstName;
-            PatientLastName = a.Patient.LastName ?? string.Empty;
+            PatientLastName = a.Patient.LastName;
             PatientPhoneNumber = a.Patient.PhoneNumber?.Number ?? string.Empty;
             PatientEmail = a.Patient.Email?.EmailAddress ?? string.Empty;
 
@@ -47,7 +47,7 @@ namespace MediTap.Api.DTO
             MedicFirstName = a.Medic.FirstName;
             MedicSpecialty = a.Medic.Specialty;
             MedicEmail = a.Medic.Email?.EmailAddress ?? string.Empty;
-            MedicLastName = a.Medic.LastName ?? string.Empty;
+            MedicLastName = a.Medic.LastName;
             MedicPhoneNumber = a.Medic.PhoneNumber?.Number ?? string.Empty;
         }
 

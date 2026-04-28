@@ -23,7 +23,7 @@ namespace MediTap.Api.Services
             {
                 var medic = new Medic(request.FirstName, request.Specialty, request.Password, request.MedicStatus)
                 {
-                    LastName = request.LastName ?? string.Empty,
+                    LastName = request.LastName,
                     Email = request.Email != null ? new Email(request.Email) : null,
                     PhoneNumber = request.PhoneNumber != null ? new PhoneNumber(request.PhoneNumber) : null
                 };

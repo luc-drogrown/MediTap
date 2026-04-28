@@ -7,7 +7,7 @@ using MediTap.Api.Services.Interfaces;
 using MediTap.Api.DTO;
 namespace MediTap.Api.Controllers
 {
-    // DONE
+    // TODO -> eliminate all 'role' variables as we don't need them
     [ApiController]
     [Route("api/[controller]")]
     public class PatientController : ControllerBase
@@ -302,10 +302,9 @@ namespace MediTap.Api.Controllers
         {
             // Checks is the logged in user is the Admin (Medic with Id = 1)
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var role = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (userId != 1 && role != "Medic")
+            if (userId != 1)
             {
-                _logger.LogWarning("Unauthorized attempt to create patient by user ID: {UserId}, Role: {Role}", userId, role);
+                _logger.LogWarning("Unauthorized attempt to create patient by user ID: {UserId}", userId);
                 return NotFound();
             }
 
@@ -313,7 +312,7 @@ namespace MediTap.Api.Controllers
             try
             {
                 var response = _patientService.Create(request);
-                _logger.LogInformation("Patient created successfully by user ID: {UserId}, Role: {Role}", userId, role);
+                _logger.LogInformation("Patient created successfully by user ID: {UserId}", userId);
                 return Ok(response);
             }
 
@@ -321,17 +320,27 @@ namespace MediTap.Api.Controllers
             // Catches specific exceptions related to patient creation 
             catch (InvalidPhoneNumberException ex)
             {
-                _logger.LogError(ex, "Invalid phone number provided for patient creation by user ID: {UserId}, Role: {Role}", userId, role);
+                _logger.LogError(ex, "Invalid phone number provided for patient creation by user ID: {UserId}", userId);
                 return BadRequest(ex.Message);
             }
             catch (InvalidEmailException ex)
             {
-                _logger.LogError(ex, "Invalid email provided for patient creation by user ID: {UserId}, Role: {Role}", userId, role);
+                _logger.LogError(ex, "Invalid email provided for patient creation by user ID: {UserId}", userId);
+                return BadRequest(ex.Message);
+            }
+            catch( UnameAlreadyExistsException ex)
+            {
+                _logger.LogError(ex, "Uname for patient creation by user ID already exists: {UserId}", userId);
+                return BadRequest(ex.Message + "Please try again.");
+            }
+            catch(CNPAlreadyExistsException ex)
+            {
+                _logger.LogError(ex, "CNP for patient creation by user ID already exists: {UserId}", userId);
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating patient by user ID: {UserId}, Role: {Role}", userId, role);
+                _logger.LogError(ex, "Error creating patient by user ID: {UserId}", userId);
                 return StatusCode(500, "An error occurred while creating the patient.");
             }
         }

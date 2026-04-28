@@ -9,7 +9,7 @@ namespace MediTap.Api.DTO
         public string CNP { get; set; }
 
 
-        public string? LastName { get; set; }
+        public string LastName { get; set; }
 
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
@@ -20,7 +20,7 @@ namespace MediTap.Api.DTO
             Id = p.Id;
             FirstName = p.FirstName;
             CNP = p.CNP.CodNumericPersonal;
-            LastName = p.LastName ?? string.Empty;
+            LastName = p.LastName;
             Email = p.Email?.EmailAddress;
             PhoneNumber = p.PhoneNumber?.Number;
         }

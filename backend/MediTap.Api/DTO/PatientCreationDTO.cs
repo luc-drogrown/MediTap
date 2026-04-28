@@ -16,7 +16,7 @@ namespace MediTap.Api.DTO
 
         public string Password { get; set; }
 
-        public string? LastName { get; set; }
+        public string LastName { get; set; }
 
         public string? Email { get; set; }
 
