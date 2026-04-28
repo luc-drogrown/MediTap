@@ -7,18 +7,25 @@
     <img src="~/images/logo.png" alt="MediTap Logo" class="logo" />
     <h1>Medic Login</h1>
 
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.Error
+        </div>
+    }
+
     <form asp-controller="Medic" asp-action="LoginSubmit" method="post">
 
         <div class="form-group">
             <label>Username</label>
-            <input type="text" name="uname" />
+            <input type="text" name="uname" placeholder="Enter your username" />
         </div>
 
         <div class="form-group password-group">
             <label>Password</label>
 
             <div class="password-wrapper">
-                <input type="password" id="passwordInput" name="password" />
+                <input type="password" id="passwordInput" name="password" placeholder="Enter password"/>
                 <button type="button" id="togglePassword">
                     <i class="bi bi-eye"></i>
                 </button>

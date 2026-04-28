@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace MediTapFRONT.Controllers
+namespace MediTap.Front.Controllers
 {
     public class PatientController : Controller
     {

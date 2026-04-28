@@ -52,7 +52,12 @@ namespace MediTap.Api.Controllers
 
                     var token = GenerateJwtToken(patient.Id, "Patient", patient.Uname);
 
-                    return Ok(new { Token = token , Role = "Patient" });
+                    return Ok(new
+                    {
+                        Token = token,
+                        Role = "Patient",
+                        Id = patient.Id
+                    });
                 }
             }
 
@@ -79,7 +84,12 @@ namespace MediTap.Api.Controllers
                     }
 
                     var token = GenerateJwtToken(medic.Id, "Medic", medic.Uname);
-                    return Ok(new { Token = token, Role = "Medic" });
+                    return Ok(new
+                    {
+                        Token = token,
+                        Role = "Medic",
+                        Id = medic.Id
+                    });
                 }
             }
         }

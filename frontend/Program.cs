@@ -5,7 +5,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient("MediTapApi", client =>
 {
-    client.BaseAddress = new Uri("http://localhost:5142/");
+    client.BaseAddress = new Uri("https://localhost:7116/");
 });
 
 builder.Services.AddSession();
@@ -23,6 +23,8 @@ if (!app.Environment.IsDevelopment())
 //app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseSession();
+
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -31,8 +33,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
-app.UseSession();
-
 
 app.Run();
