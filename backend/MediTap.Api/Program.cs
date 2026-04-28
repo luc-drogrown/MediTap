@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text.Json.Serialization;
 using System.Text;
+using Scalar.AspNetCore;
 
 
 
@@ -67,6 +68,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 
 
+// For testing purposes
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
+
+
+
 var app = builder.Build();
 
 // Seed the database with the admin user
@@ -90,11 +102,14 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference(); // For testing
 }
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); 
+// Allows CORS for testing ;
+app.UseCors("AllowAll");
+
 app.UseAuthorization();  
 
 app.UseAuthorization();
