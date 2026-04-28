@@ -10,9 +10,11 @@
 
         public string Uname { get; private set; }
         public string PasswordHash { get; set; }
-        
+
+        public string LastName { get; set; }
+
         /// Non essential info about the patient
-        public string? LastName { get; set; }
+       
         public Email? Email { get; set; }
 
         //TODO add a phone number class and exceptions for invalid phone numbers

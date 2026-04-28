@@ -23,7 +23,7 @@
 
 
         // Non mandatory info about the medic
-        public string? LastName { get; set; }
+        public string LastName { get; set; }
         public Email? Email { get; set; }
         public PhoneNumber? PhoneNumber { get; set; }
 
