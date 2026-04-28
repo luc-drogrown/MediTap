@@ -62,6 +62,7 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
+<<<<<<< Updated upstream
 C:\Users\draga\Documents\College\Year 3\Sem 2\Industrial Informatics\Project\Integration testing\MediTap-FullStack\frontend\wwwroot\lib\jquery\LICENSE.txt
 C:\Users\draga\Documents\College\Year 3\Sem 2\Industrial Informatics\Project\Integration testing\MediTap-FullStack\frontend\wwwroot\favicon.ico
 C:\Users\draga\Documents\College\Year 3\Sem 2\Industrial Informatics\Project\Integration testing\MediTap-FullStack\frontend\wwwroot\lib\jquery\dist\jquery.slim.min.map
@@ -124,3 +125,67 @@ C:\Users\draga\Documents\College\Year 3\Sem 2\Industrial Informatics\Project\Int
 C:\Users\draga\Documents\College\Year 3\Sem 2\Industrial Informatics\Project\Integration testing\MediTap-FullStack\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 C:\Users\draga\Documents\College\Year 3\Sem 2\Industrial Informatics\Project\Integration testing\MediTap-FullStack\frontend\wwwroot\js\site.js
 C:\Users\draga\Documents\College\Year 3\Sem 2\Industrial Informatics\Project\Integration testing\MediTap-FullStack\frontend\wwwroot\css\site.css
+=======
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\css\site.css
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\favicon.ico
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\js\site.js
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap.css
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.js
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.js
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.min.js
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\jquery-validation\dist\additional-methods.js
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\jquery-validation\dist\additional-methods.min.js
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\jquery-validation\dist\jquery.validate.js
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\jquery-validation\dist\jquery.validate.min.js
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\jquery-validation\LICENSE.md
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\jquery\dist\jquery.js
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\jquery\dist\jquery.min.js
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\jquery\dist\jquery.min.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\jquery\dist\jquery.slim.js
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\jquery\dist\jquery.slim.min.js
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\jquery\dist\jquery.slim.min.map
+D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\frontend\wwwroot\lib\jquery\LICENSE.txt
+>>>>>>> Stashed changes

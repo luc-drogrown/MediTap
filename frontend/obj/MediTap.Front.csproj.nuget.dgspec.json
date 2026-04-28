@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< Updated upstream
     "C:\\Users\\draga\\Documents\\College\\Year 3\\Sem 2\\Industrial Informatics\\Project\\Integration testing\\MediTap-FullStack\\frontend\\MediTap.Front.csproj": {}
   },
   "projects": {
@@ -12,12 +13,29 @@
         "projectPath": "C:\\Users\\draga\\Documents\\College\\Year 3\\Sem 2\\Industrial Informatics\\Project\\Integration testing\\MediTap-FullStack\\frontend\\MediTap.Front.csproj",
         "packagesPath": "C:\\Users\\draga\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\draga\\Documents\\College\\Year 3\\Sem 2\\Industrial Informatics\\Project\\Integration testing\\MediTap-FullStack\\frontend\\obj\\",
+=======
+    "D:\\facultate\\Facultate\\An3\\Sem2\\ProiectII\\MediTap\\frontend\\MediTap.Front.csproj": {}
+  },
+  "projects": {
+    "D:\\facultate\\Facultate\\An3\\Sem2\\ProiectII\\MediTap\\frontend\\MediTap.Front.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\facultate\\Facultate\\An3\\Sem2\\ProiectII\\MediTap\\frontend\\MediTap.Front.csproj",
+        "projectName": "MediTap.Front",
+        "projectPath": "D:\\facultate\\Facultate\\An3\\Sem2\\ProiectII\\MediTap\\frontend\\MediTap.Front.csproj",
+        "packagesPath": "C:\\Users\\IonutMilkas\\.nuget\\packages\\",
+        "outputPath": "D:\\facultate\\Facultate\\An3\\Sem2\\ProiectII\\MediTap\\frontend\\obj\\",
+>>>>>>> Stashed changes
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
+<<<<<<< Updated upstream
           "C:\\Users\\draga\\AppData\\Roaming\\NuGet\\NuGet.Config",
+=======
+          "C:\\Users\\IonutMilkas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> Stashed changes
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

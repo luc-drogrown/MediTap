@@ -9,7 +9,6 @@ using System.Text.Json.Serialization;
 using System.Text;
 
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Adding the Database connection
@@ -102,4 +101,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-

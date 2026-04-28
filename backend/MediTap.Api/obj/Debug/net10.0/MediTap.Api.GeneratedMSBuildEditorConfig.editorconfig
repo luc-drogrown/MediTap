@@ -19,13 +19,21 @@ build_property.TargetFrameworkIdentifier = .NETCoreApp
 build_property.TargetFrameworkVersion = v10.0
 build_property.RootNamespace = MediTap.Api
 build_property.RootNamespace = MediTap.Api
+<<<<<<< Updated upstream
 build_property.ProjectDir = C:\Users\draga\Documents\College\Year 3\Sem 2\Industrial Informatics\Project\Integration testing\MediTap-FullStack\backend\MediTap.Api\
+=======
+build_property.ProjectDir = D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\backend\MediTap.Api\
+>>>>>>> Stashed changes
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+<<<<<<< Updated upstream
 build_property.MSBuildProjectDirectory = C:\Users\draga\Documents\College\Year 3\Sem 2\Industrial Informatics\Project\Integration testing\MediTap-FullStack\backend\MediTap.Api
+=======
+build_property.MSBuildProjectDirectory = D:\facultate\Facultate\An3\Sem2\ProiectII\MediTap\backend\MediTap.Api
+>>>>>>> Stashed changes
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 

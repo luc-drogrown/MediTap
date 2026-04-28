@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="backend/MediTap.Api/MediTap.Api.csproj" />
   <Project Path="frontend/MediTap.Front.csproj" />
+  <Project Path="MediTap.Tests/MediTap.Tests.csproj" Id="57ecf356-a3e7-47c5-b6e0-c12e25247bdf" />
 </Solution>

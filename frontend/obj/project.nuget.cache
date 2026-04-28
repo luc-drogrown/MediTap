@@ -1,8 +1,14 @@
 {
   "version": 2,
+<<<<<<< Updated upstream
   "dgSpecHash": "BmCXJXc31xU=",
   "success": true,
   "projectFilePath": "C:\\Users\\draga\\Documents\\College\\Year 3\\Sem 2\\Industrial Informatics\\Project\\Integration testing\\MediTap-FullStack\\frontend\\MediTap.Front.csproj",
+=======
+  "dgSpecHash": "yCft7DnYDxs=",
+  "success": true,
+  "projectFilePath": "D:\\facultate\\Facultate\\An3\\Sem2\\ProiectII\\MediTap\\frontend\\MediTap.Front.csproj",
+>>>>>>> Stashed changes
   "expectedPackageFiles": [],
   "logs": []
 }
