@@ -24,9 +24,13 @@ class MainActivity : ComponentActivity() {
     private lateinit var textView: TextView
     private lateinit var editText: android.widget.EditText
     private lateinit var writeButton: android.widget.Button
-    private val serverUrl = "htt
+    private val IP = "172.27.139.138";
+    private val serverUrl = "http://$IP:5115/Nfc/Scan"
+    private val pendingWriteUrl = "http://$IP:5115/Nfc/GetPendingWrite"
+    private val confirmWriteUrl = "http://$IP:5115/Nfc/ConfirmWrite"
     private var writeMode = false
     private var currentTag: Tag? = null
+    private var pendingPatientUname: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,24 +50,19 @@ class MainActivity : ComponentActivity() {
         }
 
         writeButton = android.widget.Button(this).apply {
-            text = "Write card"
+            text = "Write patient card"
+            isEnabled = false
         }
 
         editText.visibility = android.view.View.GONE
         writeButton.visibility = android.view.View.VISIBLE
 
         writeButton.setOnClickListener {
-            writeMode = !writeMode
-
-            if (writeMode) {
-                textView.text = "Enter data, then tap card"
-                editText.visibility = android.view.View.VISIBLE
-                writeButton.text = "Read card"
+            if (pendingPatientUname != null) {
+                writeMode = true
+                textView.text = "Tap NFC card to write patient data"
             } else {
-                textView.text = "Scan a card"
-                editText.visibility = android.view.View.GONE
-                editText.text.clear()
-                writeButton.text = "Write card"
+                Toast.makeText(this, "No patient waiting for card writing", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -76,6 +75,7 @@ class MainActivity : ComponentActivity() {
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
 
         handleNfcIntent(intent)
+        checkPendingWrite()
     }
 
     override fun onResume() {
@@ -128,17 +128,17 @@ class MainActivity : ComponentActivity() {
             }
 
             if (writeMode) {
-                val dataToWrite = editText.text.toString()
+                val dataToWrite = pendingPatientUname
 
-                if (dataToWrite.isNotEmpty()) {
+                if (!dataToWrite.isNullOrEmpty()) {
                     writeToTag(dataToWrite, currentTag)
 
                     writeMode = false
-                    editText.visibility = android.view.View.GONE
-                    editText.text.clear()
-                    writeButton.text = "Write card"
+                    pendingPatientUname = null
+                    writeButton.isEnabled = false
+                    writeButton.text = "Write patient card"
                 } else {
-                    Toast.makeText(this, "Enter data first", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "No patient data available", Toast.LENGTH_SHORT).show()
                 }
 
                 return
@@ -183,6 +183,7 @@ class MainActivity : ComponentActivity() {
 
                 ndef.writeNdefMessage(message)
                 ndef.close()
+                confirmWriteToServer()
 
                 runOnUiThread {
                     Toast.makeText(this, "Written successfully", Toast.LENGTH_SHORT).show()
@@ -197,6 +198,58 @@ class MainActivity : ComponentActivity() {
             e.printStackTrace()
             runOnUiThread {
                 Toast.makeText(this, "Write failed", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun checkPendingWrite() {
+        thread {
+            try {
+                val url = URL(pendingWriteUrl)
+                val conn = url.openConnection() as HttpURLConnection
+
+                conn.requestMethod = "GET"
+
+                if (conn.responseCode == 200) {
+                    val response = conn.inputStream.bufferedReader().readText()
+
+                    val json = org.json.JSONObject(response)
+                    val patientUname = json.getString("patientUname")
+
+                    pendingPatientUname = patientUname
+
+                    runOnUiThread {
+                        textView.text = "Ready to write patient card"
+                        writeButton.isEnabled = true
+                    }
+                } else {
+                    pendingPatientUname = null
+
+                    runOnUiThread {
+                        textView.text = "No patient waiting for card writing"
+                        writeButton.isEnabled = false
+                    }
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun confirmWriteToServer() {
+        thread {
+            try {
+                val url = URL(confirmWriteUrl)
+                val conn = url.openConnection() as HttpURLConnection
+
+                conn.requestMethod = "POST"
+                conn.doOutput = true
+
+                conn.responseCode
+
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
