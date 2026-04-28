@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "Register Patient";
+}
+
+<div class="login-card register-card">
+
+    <img src="~/images/logo.png" alt="MediTap Logo" class="logo" />
+    <h1>Register Patient</h1>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.Error
+        </div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    <form asp-controller="Admin" asp-action="RegisterPatientSubmit" method="post">
+
+        <div class="form-group">
+            <label>First Name</label>
+            <input type="text" name="firstName" placeholder="Enter first name" required/>
+        </div>
+
+        <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" name="lastName" placeholder="Enter last name" required />
+        </div>
+
+        <div class="form-group">
+            <label>Email (Optional)</label>
+            <input type="email" name="email" placeholder="Enter email" />
+        </div>
+
+        <div class="form-group">
+            <label>Phone Number (Optional)</label>
+            <input type="text" name="phoneNumber" placeholder="Enter phone number" />
+        </div>
+
+        <div class="form-group">
+            <label>CNP</label>
+            <input type="text" name="cnp" placeholder="Enter CNP" required />
+        </div>
+
+        <div class="form-group">
+            <label>Date of Birth</label>
+            <input type="date" name="dateOfBirth" required />
+        </div>
+
+        <div class="form-group">
+            <label>Address (Optional)</label>
+            <input type="text" name="address" placeholder="Enter address" />
+        </div>
+
+        <div class="form-group password-group">
+            <label>Password</label>
+
+            <div class="password-wrapper">
+                <input type="password" id="passwordInput" name="password" placeholder="Enter password" required />
+
+                <button type="button" id="togglePassword">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Register Patient
+        </button>
+
+        <a href="/Admin/Dashboard" class="btn btn-success login-back-btn">
+            Back to Admin Dashboard
+        </a>
+
+    </form>
+</div>
+
+<script>
+    const passwordInput = document.getElementById("passwordInput");
+    const toggleButton = document.getElementById("togglePassword");
+    const icon = toggleButton.querySelector("i");
+
+    toggleButton.addEventListener("click", function () {
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
+        } else {
+            passwordInput.type = "password";
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+        }
+    });
+</script>

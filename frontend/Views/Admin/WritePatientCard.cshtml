@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Write Patient Card";
+}
+
+<div class="write-card-page">
+    <div class="scan-box">
+
+        <h1>Patient Registered Successfully</h1>
+
+        <i class="bi bi-credit-card-2-front"></i>
+
+        <p id="writeStatus">Waiting for card writing...</p>
+
+        <small id="writeSubtext">
+            Open the Android app and tap the NFC card.
+        </small>
+
+        <a id="backToAdminBtn"
+               href="/Admin/Dashboard"
+               class="btn btn-primary scan-profile-btn"
+               style="display: none;">
+            Back to Admin Dashboard
+        </a>
+
+    </div>
+</div>
+
+<script>
+    fetch("/Nfc/StartWrite?uname=@TempData["PatientUname"]");
+    document.getElementById("backToAdminBtn").style.display = "none";
+    setInterval(async function () {
+        const response = await fetch("/Nfc/GetWriteStatus");
+
+        if (!response.ok) return;
+
+        const data = await response.json();
+
+            if (data.completed === true) {
+        document.getElementById("writeStatus").innerText =
+            "Card written successfully.";
+
+        document.getElementById("writeSubtext").innerText =
+            "The patient card is now ready.";
+
+        document.getElementById("backToAdminBtn").style.display = "block";
+    }
+    }, 1000);
+</script>

@@ -2,7 +2,7 @@ using MediTapFRONT.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace MediTapFRONT.Controllers
+namespace MediTap.Front.Controllers
 {
     public class HomeController : Controller
     {

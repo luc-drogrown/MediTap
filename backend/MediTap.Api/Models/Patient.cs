@@ -12,7 +12,9 @@
 
         public string Uname { get; private set; }
         public string PasswordHash { get; set; }
-        
+
+        public string LastName { get; set; }
+
         /// Non essential info about the patient
         public Email? Email { get; set; }
 
