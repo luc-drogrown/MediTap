@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <UserSecretsId>a739a925-d6f8-4d53-a799-261e29f864c4</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,6 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\MERGE\MediTap\backend\MediTap.Api\MediTap.Api.csproj" />
+    <ProjectReference Include="..\..\MERGE\MediTap\frontend\MediTap.Front.csproj" />
     <ProjectReference Include="..\backend\MediTap.Api\MediTap.Api.csproj" />
     <ProjectReference Include="..\frontend\MediTap.Front.csproj" />
   </ItemGroup>

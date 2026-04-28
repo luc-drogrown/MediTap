@@ -1,6 +1,7 @@
 ﻿using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
+using Microsoft.Extensions.Configuration;
 
 
 namespace MediTap.Tests.Frontend
@@ -9,16 +10,30 @@ namespace MediTap.Tests.Frontend
     [TestFixture]
     public class LoginAndRegisterTests : PageTest
     {
+        private IConfiguration _config;
+
+        [OneTimeSetUp]
+        public void ClassInit()
+        {
+            _config = new ConfigurationBuilder()
+                .AddUserSecrets<LoginAndRegisterTests>()
+                .Build();
+        } 
         [Test]
         public async Task UserJourney()
         {
-            await Page.GotoAsync("https://localhost:7001/");
+            string adminPassword = _config["TestSettings:AdminPassword"];
+            string adminUsername = _config["TestSettings:AdminUsername"];
+
+            if (string.IsNullOrEmpty(adminPassword) || string.IsNullOrEmpty(adminUsername))
+                NUnit.Framework.Assert.Fail("Admin Password or Username secret not found! Did you add it to secrets.json?");
+           
+            await Page.GotoAsync("https://localhost:7001");
             await Page.GetByRole(AriaRole.Link, new() { Name = "Login as Medic" }).ClickAsync();
             await Page.GetByRole(AriaRole.Textbox, new() { Name = "Enter your username" }).ClickAsync();
-            await Page.GetByRole(AriaRole.Textbox, new() { Name = "Enter your username" }).ClickAsync();
-            await Page.GetByRole(AriaRole.Textbox, new() { Name = "Enter your username" }).FillAsync("ADMIN-76861539");
+            await Page.GetByRole(AriaRole.Textbox, new() { Name = "Enter your username" }).FillAsync(adminUsername);
             await Page.GetByRole(AriaRole.Textbox, new() { Name = "Enter password" }).ClickAsync();
-            await Page.GetByRole(AriaRole.Textbox, new() { Name = "Enter password" }).FillAsync("?=M4uZ)Pld1U=#2s9W.yuqB31DwitNf|Nf3.yr,lR|5£O-g[S");
+            await Page.GetByRole(AriaRole.Textbox, new() { Name = "Enter password" }).FillAsync(adminPassword);
             await Page.GetByRole(AriaRole.Button, new() { Name = "Login" }).ClickAsync();
             await Page.GetByRole(AriaRole.Link, new() { Name = "Register Patient" }).ClickAsync();
             await Page.GetByRole(AriaRole.Textbox, new() { Name = "Enter first name" }).ClickAsync();

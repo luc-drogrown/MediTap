@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("a739a925-d6f8-4d53-a799-261e29f864c4")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("MediTap.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a94466b78c04afa47398910c00b1ab87da72f5fd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0c44f58502c34140d62e9fd780abc89c82bb40a6")]
 [assembly: System.Reflection.AssemblyProductAttribute("MediTap.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MediTap.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
