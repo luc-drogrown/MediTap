@@ -318,6 +318,8 @@ namespace MediTap.Api.Controllers
 
 
             // Catches specific exceptions related to patient creation 
+
+            // Invalid data 
             catch (InvalidPhoneNumberException ex)
             {
                 _logger.LogError(ex, "Invalid phone number provided for patient creation by user ID: {UserId}", userId);
@@ -328,7 +330,14 @@ namespace MediTap.Api.Controllers
                 _logger.LogError(ex, "Invalid email provided for patient creation by user ID: {UserId}", userId);
                 return BadRequest(ex.Message);
             }
-            catch( UnameAlreadyExistsException ex)
+            catch (InvalidCNPException ex)
+            {
+                _logger.LogError(ex, "CNP for patient creation by user ID is invalid: {UserId}", userId);
+                return BadRequest(ex.Message);
+            }
+
+            // Not unique data that should be unique
+            catch ( UnameAlreadyExistsException ex)
             {
                 _logger.LogError(ex, "Uname for patient creation by user ID already exists: {UserId}", userId);
                 return BadRequest(ex.Message + "Please try again.");
@@ -338,6 +347,8 @@ namespace MediTap.Api.Controllers
                 _logger.LogError(ex, "CNP for patient creation by user ID already exists: {UserId}", userId);
                 return BadRequest(ex.Message);
             }
+
+            // General error
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating patient by user ID: {UserId}", userId);
