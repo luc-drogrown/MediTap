@@ -24,74 +24,74 @@ namespace MediTap.Api.Controllers
             _logger = logger;
         }
 
-
-        
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequestDTO request)
         {
-            bool isPatient = request.Uname.StartsWith("P");
-
-            // Is a patient
-            if (isPatient)
+            if (request.Role == "Patient")
             {
-                _logger.LogInformation("Attempting login for patient with username: {Username}", request.Uname);
-                var patient = _context.Patients.FirstOrDefault(p => p.Uname == request.Uname);
+                _logger.LogInformation("Attempting login for patient with email: {Email}", request.Email);
+
+                var patient = _context.Patients
+                    .AsEnumerable()
+                    .FirstOrDefault(p =>
+                        p.Email != null &&
+                        p.Email.EmailAddress == request.Email);
 
                 if (patient == null)
                 {
-                    _logger.LogWarning("Login failed for patient with username: {Username} - User not found", request.Uname);
-                    return Unauthorized("Invalid username or password.");
+                    _logger.LogWarning("Login failed for patient with email: {Email} - User not found", request.Email);
+                    return Unauthorized("Invalid email or password.");
                 }
-                else
+
+                if (!Verify(request.Password, patient.PasswordHash))
                 {
-                    if(!Verify(request.Password, patient.PasswordHash))
-                    {
-                        _logger.LogWarning("Login failed for patient with username: {Username} - Incorrect password", request.Uname);
-                        return Unauthorized("Invalid username or password.");
-                    }
-
-                    var token = GenerateJwtToken(patient.Id, "Patient", patient.Uname);
-
-                    return Ok(new
-                    {
-                        Token = token,
-                        Role = "Patient",
-                        Id = patient.Id
-                    });
+                    _logger.LogWarning("Login failed for patient with email: {Email} - Incorrect password", request.Email);
+                    return Unauthorized("Invalid email or password.");
                 }
+
+                var token = GenerateJwtToken(patient.Id, "Patient", patient.Uname);
+
+                return Ok(new
+                {
+                    Token = token,
+                    Role = "Patient",
+                    Id = patient.Id
+                });
             }
 
-            // Is a doctor
-            else
+            else if (request.Role == "Medic")
             {
-                _logger.LogInformation("Attempting login for medic with username: {Username}", request.Uname);
-                var medic = _context.Medics.FirstOrDefault(m => m.Uname == request.Uname);
+                _logger.LogInformation("Attempting login for medic with email: {Email}", request.Email);
+
+                var medic = _context.Medics
+                    .AsEnumerable()
+                    .FirstOrDefault(m =>
+                        m.Email != null &&
+                        m.Email.EmailAddress == request.Email);
 
                 if (medic == null)
                 {
-                    _logger.LogWarning("Login failed for medic with username: {Username} - User not found", request.Uname);
-                    return Unauthorized("Invalid username or password.");
+                    _logger.LogWarning("Login failed for medic with email: {Email} - User not found", request.Email);
+                    return Unauthorized("Invalid email or password.");
                 }
-                else
+
+                if (!Verify(request.Password, medic.PasswordHash))
                 {
-                    if (!Verify(request.Password, medic.PasswordHash))
-                    {
-                        //_logger.LogInformation("Attempting to log with password: {Password}", BCrypt.Net.BCrypt.HashPassword(request.Password));
-                        //_logger.LogInformation("Hashed password: {PasswordHash}", medic.PasswordHash);
-
-                        _logger.LogWarning("Login failed for medic with username: {Username} - Incorrect password", request.Uname);
-                        return Unauthorized("Invalid username or password.");
-                    }
-
-                    var token = GenerateJwtToken(medic.Id, "Medic", medic.Uname);
-                    return Ok(new
-                    {
-                        Token = token,
-                        Role = "Medic",
-                        Id = medic.Id
-                    });
+                    _logger.LogWarning("Login failed for medic with email: {Email} - Incorrect password", request.Email);
+                    return Unauthorized("Invalid email or password.");
                 }
+
+                var token = GenerateJwtToken(medic.Id, "Medic", medic.Uname);
+
+                return Ok(new
+                {
+                    Token = token,
+                    Role = "Medic",
+                    Id = medic.Id
+                });
             }
+
+            return BadRequest("Invalid role.");
         }
 
 

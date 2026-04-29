@@ -15,6 +15,7 @@
 
         // These two are used to login to the system
         // they are gee=nerated when a new Medic is created
+        public Email Email { get; set; }
         public string Uname { get; private set; }
         // Password is set by the medic
         public string PasswordHash { get; set; }
@@ -24,7 +25,6 @@
 
 
         // Non mandatory info about the medic
-        public Email? Email { get; set; }
         public PhoneNumber? PhoneNumber { get; set; }
 
 

@@ -47,16 +47,7 @@ namespace MediTap.Front.Controllers
 
             if (!response.IsSuccessStatusCode)
             {
-                if (!response.IsSuccessStatusCode)
-                {
-                    var errorMessage = await response.Content.ReadAsStringAsync();
-
-                    ViewBag.Error =
-                        $"Failed to register patient. Status code: {(int)response.StatusCode} {response.StatusCode}. " +
-                        errorMessage;
-
-                    return View("RegisterPatient");
-                }
+                ViewBag.Error = await GetApiErrorMessage(response, "Failed to register patient.");
                 return View("RegisterPatient");
             }
 
@@ -104,17 +95,24 @@ namespace MediTap.Front.Controllers
 
             if (!response.IsSuccessStatusCode)
             {
-                var errorMessage = await response.Content.ReadAsStringAsync();
-
-                ViewBag.Error =
-                    $"Failed to register medic. Status code: {(int)response.StatusCode} {response.StatusCode}. " +
-                    errorMessage;
-
+                ViewBag.Error = await GetApiErrorMessage(response, "Failed to register medic.");
                 return View("RegisterMedic");
             }
 
             TempData["Success"] = "Medic registered successfully!";
             return RedirectToAction("RegisterMedic");
+        }
+
+        private async Task<string> GetApiErrorMessage(HttpResponseMessage response, string fallbackMessage)
+        {
+            var apiMessage = await response.Content.ReadAsStringAsync();
+
+            if (!string.IsNullOrWhiteSpace(apiMessage))
+            {
+                return apiMessage;
+            }
+
+            return fallbackMessage;
         }
 
         public IActionResult Dashboard()
