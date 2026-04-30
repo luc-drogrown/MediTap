@@ -143,5 +143,21 @@ namespace MediTap.Api.Services
                 }
             }
         }
+
+
+        bool IMedicService.AuthCheck(int pid, int mid)
+        {
+            try
+            {
+                var authCheck = _context.Medics
+                    .Any(m => m.Patients.Any(p => p.Id == pid) && m.Id == mid);
+                return authCheck;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw;
+            }
+        }
     }
 }

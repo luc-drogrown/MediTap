@@ -29,6 +29,9 @@ builder.Services.AddDbContext<MediTapDbContext>(options => options.UseNpgsql(con
 // Adding the services
 builder.Services.AddScoped<IMedicService, MedicService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<ISymptomService, SymptomService>();
+builder.Services.AddScoped<IAffectionService, AffectionService>();
+builder.Services.AddScoped<IMedicationService, MedicationService>();
 
 
 // Adding the controllers
