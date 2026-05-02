@@ -113,8 +113,7 @@ namespace MediTap.Api.Services
                     .Include(m => m.Patients)
                     .FirstOrDefault(m => m.Id == loggedInUserId);
 
-                // TODO
-                // Check if Medic is null and throw custom exception then catch it in the controller
+                // TODO -> Check if Medic is null and throw custom exception then catch it in the controller
 
                 // They are already linked
                 if (medic.Patients.Any(p => p.Id == request.Id))

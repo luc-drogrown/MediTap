@@ -16,7 +16,6 @@
         /// Non essential info about the patient
         public Email? Email { get; set; }
 
-        //TODO add a phone number class and exceptions for invalid phone numbers
         public PhoneNumber? PhoneNumber { get; set; }
         public string? Address { get; set; }
 
