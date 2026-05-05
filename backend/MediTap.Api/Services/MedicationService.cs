@@ -18,11 +18,13 @@ namespace MediTap.Api.Services
 
 
 
-        // TODO -> Add checks that the Medication is valid (dates are not in the future, etc.)
         MedicationDTO IMedicationService.Add(MedicationCreationDTO medication, int userId)
         {
             try
             {
+
+                if (!isMedicationValid(medication)) { return null; }
+
                 var medicationEntity = new Medication
                 {
                     Name = medication.Name,
@@ -124,6 +126,29 @@ namespace MediTap.Api.Services
                 _logger.LogError(ex.Message);
                 throw;
             }
+        }
+
+        bool isMedicationValid(MedicationCreationDTO medication)
+        {
+            if (medication == null) { return false; }
+
+            // Checks for the issue date to be in the past
+            if (medication.IssueDate.CompareTo(DateTime.Now) > 0) { return false; }
+
+            // Checks for end date to be in the future
+            if (medication.EndDate.HasValue)
+            {
+                if (medication.EndDate.Value.CompareTo(DateTime.Now) < 0) { return false; }
+            }
+
+
+            // Checks for start date to be in the future or present
+            if (medication.StartDate.HasValue)
+            {
+                if(medication.StartDate.Value.CompareTo(DateTime.Now) < 0) { return false; }
+            }
+
+            return true;
         }
     }
 }

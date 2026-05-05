@@ -1,7 +1,6 @@
 ﻿using MediTap.Api.Models;   
 namespace MediTap.Api.DTO
 {
-    // TODO --> clean this DTO of non necessary information
     public class AppointmentDTO
     {
         public int Id { get; set; }

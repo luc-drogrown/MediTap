@@ -2,6 +2,7 @@
 using MediTap.Api.Models;
 using MediTap.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace MediTap.Api.Services.Interfaces
 {
@@ -15,27 +16,15 @@ namespace MediTap.Api.Services.Interfaces
             _context = context;
         }
 
-
+        // TODO --> Make a DTO for Medic and one for the Patient so that they don't have to type out their own id
         AppointmentDTO IAppointmentService.Add(AppointmentCreationDTO appointment, int userId, string role)
         {
             if(appointment == null) { return null; }
-
+            if(!IsAppointmentDateFree(appointment) || !IsAppointmentValid(appointment)) { return null; }
+            
+            
             // make sure the userID is equal to apppointment.MedicId or apppointment.PatientID depending on the role of the user
-            bool isAuth;
-            switch (role)
-            {
-                case "Medic":
-                    isAuth = userId == appointment.MedicId; break;
-
-                case "Patient":
-                    isAuth = userId == appointment.PatientId; break;
-
-                default:
-                    isAuth = false; break;
-            }
-
-            // Permission denied
-            if(!isAuth) { return null; }
+            if(!CheckValidity(appointment, userId, role)) { return null; }
 
             // Permission granted
             var appointmentEntity = new Appointment()
@@ -71,5 +60,53 @@ namespace MediTap.Api.Services.Interfaces
                 .ExecuteDelete();
         }
 
+        bool IsAppointmentValid(AppointmentCreationDTO appointment)
+        {
+            if (appointment == null) { return false; }
+
+            // Checks for issue date to be in the past or present
+            if (appointment.IssueDate > DateTime.Now) { return false; }
+
+            // Checks for the date to be in the future
+            if (appointment.Date.Date < DateTime.Now.Date) { return false; }
+
+            return true;
+        }
+
+        bool IsAppointmentDateFree(AppointmentCreationDTO appointment)
+        {
+            var windowStart = appointment.Date.AddMinutes(-15);
+            var windowEnd = appointment.Date.AddMinutes(15);
+
+            // Ask the database if ANY appointment overlaps this window 
+            // for EITHER the Medic OR the Patient.
+            bool hasConflict = _context.Appointments
+                .Any(a =>
+                    (a.MedicId == appointment.MedicId || a.PatientId == appointment.PatientId)
+                    &&
+                    (a.Date > windowStart && a.Date < windowEnd)
+                );
+
+            return !hasConflict;
+
+        }
+
+        bool CheckValidity(AppointmentCreationDTO appointment, int userId, string role)
+        {
+            bool isAuth;
+            switch (role)
+            {
+                case "Medic":
+                    isAuth = userId == appointment.MedicId; break;
+
+                case "Patient":
+                    isAuth = userId == appointment.PatientId; break;
+
+                default:
+                    isAuth = false; break;
+            }
+
+            return isAuth;
+        }
     }
 }
