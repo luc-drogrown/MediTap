@@ -22,7 +22,6 @@ namespace MediTap.Api.Models
             }
 
         }
-        
 
         private bool checkEmailValidity(string email)
         {

@@ -1,4 +1,0 @@
-<Solution>
-  <Project Path="backend/MediTap.Api/MediTap.Api.csproj" />
-  <Project Path="frontend/MediTap.Front.csproj" />
-</Solution>

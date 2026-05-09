@@ -1,0 +1,229 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4D49DDAB-CBFD-0DF2-AD4F-A33DF34F02C2}|backend\\MediTap.Api\\MediTap.Api.csproj|c:\\facultate\\facultate\\projects\\meditap_backup\\meditapfullstack\\backend\\meditap.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D49DDAB-CBFD-0DF2-AD4F-A33DF34F02C2}|backend\\MediTap.Api\\MediTap.Api.csproj|solutionrelative:backend\\meditap.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D49DDAB-CBFD-0DF2-AD4F-A33DF34F02C2}|backend\\MediTap.Api\\MediTap.Api.csproj|c:\\facultate\\facultate\\projects\\meditap_backup\\meditapfullstack\\backend\\meditap.api\\models\\email.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D49DDAB-CBFD-0DF2-AD4F-A33DF34F02C2}|backend\\MediTap.Api\\MediTap.Api.csproj|solutionrelative:backend\\meditap.api\\models\\email.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D49DDAB-CBFD-0DF2-AD4F-A33DF34F02C2}|backend\\MediTap.Api\\MediTap.Api.csproj|c:\\facultate\\facultate\\projects\\meditap_backup\\meditapfullstack\\backend\\meditap.api\\models\\converters\\emailconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D49DDAB-CBFD-0DF2-AD4F-A33DF34F02C2}|backend\\MediTap.Api\\MediTap.Api.csproj|solutionrelative:backend\\meditap.api\\models\\converters\\emailconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1E3E250D-9637-9F88-9B0C-C5457D244118}|frontend\\MediTap.Front.csproj|c:\\facultate\\facultate\\projects\\meditap_backup\\meditapfullstack\\frontend\\views\\admin\\registermedic.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{1E3E250D-9637-9F88-9B0C-C5457D244118}|frontend\\MediTap.Front.csproj|solutionrelative:frontend\\views\\admin\\registermedic.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1E3E250D-9637-9F88-9B0C-C5457D244118}|frontend\\MediTap.Front.csproj|c:\\facultate\\facultate\\projects\\meditap_backup\\meditapfullstack\\frontend\\views\\admin\\registerpatient.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{1E3E250D-9637-9F88-9B0C-C5457D244118}|frontend\\MediTap.Front.csproj|solutionrelative:frontend\\views\\admin\\registerpatient.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1E3E250D-9637-9F88-9B0C-C5457D244118}|frontend\\MediTap.Front.csproj|c:\\facultate\\facultate\\projects\\meditap_backup\\meditapfullstack\\frontend\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1E3E250D-9637-9F88-9B0C-C5457D244118}|frontend\\MediTap.Front.csproj|solutionrelative:frontend\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D49DDAB-CBFD-0DF2-AD4F-A33DF34F02C2}|backend\\MediTap.Api\\MediTap.Api.csproj|c:\\facultate\\facultate\\projects\\meditap_backup\\meditapfullstack\\backend\\meditap.api\\models\\medic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D49DDAB-CBFD-0DF2-AD4F-A33DF34F02C2}|backend\\MediTap.Api\\MediTap.Api.csproj|solutionrelative:backend\\meditap.api\\models\\medic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D49DDAB-CBFD-0DF2-AD4F-A33DF34F02C2}|backend\\MediTap.Api\\MediTap.Api.csproj|c:\\facultate\\facultate\\projects\\meditap_backup\\meditapfullstack\\backend\\meditap.api\\models\\patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D49DDAB-CBFD-0DF2-AD4F-A33DF34F02C2}|backend\\MediTap.Api\\MediTap.Api.csproj|solutionrelative:backend\\meditap.api\\models\\patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1E3E250D-9637-9F88-9B0C-C5457D244118}|frontend\\MediTap.Front.csproj|c:\\facultate\\facultate\\projects\\meditap_backup\\meditapfullstack\\frontend\\controllers\\patientcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1E3E250D-9637-9F88-9B0C-C5457D244118}|frontend\\MediTap.Front.csproj|solutionrelative:frontend\\controllers\\patientcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1E3E250D-9637-9F88-9B0C-C5457D244118}|frontend\\MediTap.Front.csproj|c:\\facultate\\facultate\\projects\\meditap_backup\\meditapfullstack\\frontend\\controllers\\mediccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1E3E250D-9637-9F88-9B0C-C5457D244118}|frontend\\MediTap.Front.csproj|solutionrelative:frontend\\controllers\\mediccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D49DDAB-CBFD-0DF2-AD4F-A33DF34F02C2}|backend\\MediTap.Api\\MediTap.Api.csproj|c:\\facultate\\facultate\\projects\\meditap_backup\\meditapfullstack\\backend\\meditap.api\\dto\\loginrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D49DDAB-CBFD-0DF2-AD4F-A33DF34F02C2}|backend\\MediTap.Api\\MediTap.Api.csproj|solutionrelative:backend\\meditap.api\\dto\\loginrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1E3E250D-9637-9F88-9B0C-C5457D244118}|frontend\\MediTap.Front.csproj|c:\\facultate\\facultate\\projects\\meditap_backup\\meditapfullstack\\frontend\\views\\patient\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{1E3E250D-9637-9F88-9B0C-C5457D244118}|frontend\\MediTap.Front.csproj|solutionrelative:frontend\\views\\patient\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1E3E250D-9637-9F88-9B0C-C5457D244118}|frontend\\MediTap.Front.csproj|c:\\facultate\\facultate\\projects\\meditap_backup\\meditapfullstack\\frontend\\views\\medic\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{1E3E250D-9637-9F88-9B0C-C5457D244118}|frontend\\MediTap.Front.csproj|solutionrelative:frontend\\views\\medic\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 328,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "RegisterPatient.cshtml",
+              "DocumentMoniker": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\frontend\\Views\\Admin\\RegisterPatient.cshtml",
+              "RelativeDocumentMoniker": "frontend\\Views\\Admin\\RegisterPatient.cshtml",
+              "ToolTip": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\frontend\\Views\\Admin\\RegisterPatient.cshtml",
+              "RelativeToolTip": "frontend\\Views\\Admin\\RegisterPatient.cshtml",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAACUAAABQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-29T17:14:57.016Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Medic.cs",
+              "DocumentMoniker": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\backend\\MediTap.Api\\Models\\Medic.cs",
+              "RelativeDocumentMoniker": "backend\\MediTap.Api\\Models\\Medic.cs",
+              "ToolTip": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\backend\\MediTap.Api\\Models\\Medic.cs",
+              "RelativeToolTip": "backend\\MediTap.Api\\Models\\Medic.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAwA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T17:13:01.822Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Patient.cs",
+              "DocumentMoniker": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\backend\\MediTap.Api\\Models\\Patient.cs",
+              "RelativeDocumentMoniker": "backend\\MediTap.Api\\Models\\Patient.cs",
+              "ToolTip": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\backend\\MediTap.Api\\Models\\Patient.cs",
+              "RelativeToolTip": "backend\\MediTap.Api\\Models\\Patient.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAwAwAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T17:12:25.346Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "EmailConverter.cs",
+              "DocumentMoniker": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\backend\\MediTap.Api\\Models\\Converters\\EmailConverter.cs",
+              "RelativeDocumentMoniker": "backend\\MediTap.Api\\Models\\Converters\\EmailConverter.cs",
+              "ToolTip": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\backend\\MediTap.Api\\Models\\Converters\\EmailConverter.cs",
+              "RelativeToolTip": "backend\\MediTap.Api\\Models\\Converters\\EmailConverter.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T17:01:38.038Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Email.cs",
+              "DocumentMoniker": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\backend\\MediTap.Api\\Models\\Email.cs",
+              "RelativeDocumentMoniker": "backend\\MediTap.Api\\Models\\Email.cs",
+              "ToolTip": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\backend\\MediTap.Api\\Models\\Email.cs",
+              "RelativeToolTip": "backend\\MediTap.Api\\Models\\Email.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T17:01:26.25Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\backend\\MediTap.Api\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "backend\\MediTap.Api\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\backend\\MediTap.Api\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "backend\\MediTap.Api\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAcwBkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T17:01:11.063Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "RegisterMedic.cshtml",
+              "DocumentMoniker": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\frontend\\Views\\Admin\\RegisterMedic.cshtml",
+              "RelativeDocumentMoniker": "frontend\\Views\\Admin\\RegisterMedic.cshtml",
+              "ToolTip": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\frontend\\Views\\Admin\\RegisterMedic.cshtml",
+              "RelativeToolTip": "frontend\\Views\\Admin\\RegisterMedic.cshtml",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAACUAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-29T17:15:10.27Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\frontend\\Views\\Patient\\Login.cshtml",
+              "RelativeDocumentMoniker": "frontend\\Views\\Patient\\Login.cshtml",
+              "ToolTip": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\frontend\\Views\\Patient\\Login.cshtml",
+              "RelativeToolTip": "frontend\\Views\\Patient\\Login.cshtml",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABQAAABOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-29T17:00:19.214Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\frontend\\Views\\Medic\\Login.cshtml",
+              "RelativeDocumentMoniker": "frontend\\Views\\Medic\\Login.cshtml",
+              "ToolTip": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\frontend\\Views\\Medic\\Login.cshtml",
+              "RelativeToolTip": "frontend\\Views\\Medic\\Login.cshtml",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABMAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-29T16:59:38.882Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "PatientController.cs",
+              "DocumentMoniker": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\frontend\\Controllers\\PatientController.cs",
+              "RelativeDocumentMoniker": "frontend\\Controllers\\PatientController.cs",
+              "ToolTip": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\frontend\\Controllers\\PatientController.cs",
+              "RelativeToolTip": "frontend\\Controllers\\PatientController.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAgwBgAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T16:56:39.98Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "MedicController.cs",
+              "DocumentMoniker": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\frontend\\Controllers\\MedicController.cs",
+              "RelativeDocumentMoniker": "frontend\\Controllers\\MedicController.cs",
+              "ToolTip": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\frontend\\Controllers\\MedicController.cs",
+              "RelativeToolTip": "frontend\\Controllers\\MedicController.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAArwBIAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T16:56:38.888Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "LoginRequestDTO.cs",
+              "DocumentMoniker": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\backend\\MediTap.Api\\DTO\\LoginRequestDTO.cs",
+              "RelativeDocumentMoniker": "backend\\MediTap.Api\\DTO\\LoginRequestDTO.cs",
+              "ToolTip": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\backend\\MediTap.Api\\DTO\\LoginRequestDTO.cs",
+              "RelativeToolTip": "backend\\MediTap.Api\\DTO\\LoginRequestDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T16:56:03.312Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AdminController.cs",
+              "DocumentMoniker": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\frontend\\Controllers\\AdminController.cs",
+              "RelativeDocumentMoniker": "frontend\\Controllers\\AdminController.cs",
+              "ToolTip": "C:\\Facultate\\Facultate\\Projects\\MediTap_backup\\MediTapFULLSTACK\\frontend\\Controllers\\AdminController.cs",
+              "RelativeToolTip": "frontend\\Controllers\\AdminController.cs",
+              "ViewState": "AgIAAEoAAAAAAAAAAAAgwGwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T16:37:27.698Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

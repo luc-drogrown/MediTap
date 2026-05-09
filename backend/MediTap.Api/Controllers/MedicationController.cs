@@ -1,5 +1,4 @@
 ﻿using MediTap.Api.Models;
-using MediTap.Api.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -14,12 +13,10 @@ namespace MediTap.Api.Controllers
 
         private readonly ILogger<MedicationController> _logger;
         private readonly IMedicationService _medicationService;
-        private readonly IMedicService _medicService;
-        public MedicationController(ILogger<MedicationController> logger, IMedicationService medicationService, IMedicService medicService)
+        public MedicationController(ILogger<MedicationController> logger, IMedicationService medicationService)
         {
             _logger = logger;
             _medicationService = medicationService;
-            _medicService = medicService;
         }
 
 
@@ -36,12 +33,11 @@ namespace MediTap.Api.Controllers
             _logger.LogInformation("Getting medication by ID: {Id}", id);
 
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            // Checks that user has permission to view the Medication (aka is linked with the Patient)
-            var medication = _medicationService.GetById(id, userId);
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            var medication = _medicationService.GetById(id, userId, role);
             if (medication == null)
             {
-                _logger.LogWarning("Medication with ID {Id} not found for user ID {UserId}.", id, userId);
+                _logger.LogWarning("Medication with ID {Id} not found for user ID {UserId} with role {Role}", id, userId, role);
                 return NotFound();
             }
 
@@ -54,36 +50,28 @@ namespace MediTap.Api.Controllers
         // POST: api/medication
         [Authorize(Roles = "Medic")]
         [HttpPost]
-        public ActionResult<MedicationDTO> CreateMedication(MedicationCreationDTO medication)
+        public ActionResult<Medication> CreateMedication(Medication medication)
         {
             _logger.LogInformation("Creating a new medication");
             try
             {
                 var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-                // Check if medication.PatientId is linked with the current medic
-                if (!_medicService.AuthCheck(medication.PatientId, userId))
-                {
-                    _logger.LogWarning($"Medic with id {userId} does not have permission to add medication to Patient {medication.PatientId}");
-                    return NotFound();
-                }
-
+                var role = User.FindFirst(ClaimTypes.Role)?.Value;
                 // The Add method should return the created medication with its new ID, or null if creation failed
-                var result = _medicationService.Add(medication, userId);
+                var result = _medicationService.Add(medication, userId, role);
                 if (result == null)
                 {
-                    _logger.LogWarning("Failed to create medication for user ID {UserId} with role {Role}", userId);
+                    _logger.LogWarning("Failed to create medication for user ID {UserId} with role {Role}", userId, role);
                     return BadRequest("Failed to create medication.");
                 }
-                _logger.LogInformation("Medication created successfully with ID: {Id}", result.Id);
-                return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
-
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error occurred while creating medication");
                 return StatusCode(500, "An error occurred while creating the medication.");
             }
+            _logger.LogInformation("Medication created successfully with ID: {Id}", medication.Id);
+            return CreatedAtAction(nameof(GetById), new { id = medication.Id }, medication);
         }
 
 
@@ -91,23 +79,27 @@ namespace MediTap.Api.Controllers
         // PUT: api/medication/5
         [Authorize(Roles = "Medic")]
         [HttpPut("{id}")]
-        public IActionResult UpdateMedication(int id, MedicationUpdateDTO medication)
+        public IActionResult UpdateMedication(int id, Medication medication)
         {
             _logger.LogInformation("Updating medication with ID: {Id}, Medication: {Medication}", id, medication);
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            // Checks that Medic is linked to the patient in the Medication
-            var isAuth = _medicationService.GetAuth(id, userId);
-            if (!isAuth)
+            if (id != medication.Id)
             {
-                _logger.LogWarning("Medication with ID {Id} not found for user ID {UserId}", id, userId);
+                _logger.LogWarning("ID in URL does not match ID in body. URL ID: {UrlId}, Body ID: {BodyId}", id, medication.Id);
+                return BadRequest("ID in URL does not match ID in body");
+            }
+            // Check if the medication exists and belongs to the user
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            var existingMedication = _medicationService.GetById(id, userId, role);
+            if (existingMedication == null)
+            {
+                _logger.LogWarning("Medication with ID {Id} not found for user ID {UserId} with role {Role}", id, userId, role);
                 return NotFound();
             }
 
             try
             {
-                // Checks that Medication is prescribed for the right Patient
-                _medicationService.Update(medication, id);
+                _medicationService.Update(medication);
             }
             catch (Exception ex)
             {
@@ -127,12 +119,11 @@ namespace MediTap.Api.Controllers
         {
             _logger.LogInformation("Deleting medication with ID: {Id}", id);
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            // We need to check that
-            // Medic with userId is associated with Patient from the medication
-            var isAuth = _medicationService.GetAuth(id, userId);
-            if (!isAuth)
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            var medication = _medicationService.GetById(id, userId, role);
+            if (medication == null)
             {
-                _logger.LogWarning("Medication with ID {Id} not found for user ID {UserId}.", id, userId);
+                _logger.LogWarning("Medication with ID {Id} not found for user ID {UserId} with role {Role}", id, userId, role);
                 return NotFound();
             }
             try
@@ -141,10 +132,10 @@ namespace MediTap.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while deleting medication with ID: {Id} for user ID {UserId}.", id, userId);
+                _logger.LogError(ex, "Error occurred while deleting medication with ID: {Id} for user ID {UserId} with role {Role}", id, userId, role);
                 return StatusCode(500, "An error occurred while deleting the medication.");
             }
-            _logger.LogInformation("Medication with ID {Id} deleted successfully for user ID {UserId}.", id, userId);
+            _logger.LogInformation("Medication with ID {Id} deleted successfully for user ID {UserId} with role {Role}", id, userId, role);
             return NoContent();
         }
 

@@ -22,12 +22,13 @@ namespace MediTap.Front.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LoginSubmit(string uname, string password)
+        public async Task<IActionResult> LoginSubmit(string email, string password)
         {
             var response = await _httpClient.PostAsJsonAsync("api/Auth/login", new
             {
-                uname = uname,
-                password = password
+                email = email,
+                password = password,
+                role = "Medic"
             });
 
             if (!response.IsSuccessStatusCode)
