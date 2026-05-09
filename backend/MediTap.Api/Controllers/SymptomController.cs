@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MediTap.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-using MediTap.Api.DTO;
 using MediTap.Api.Services.Interfaces;
 namespace MediTap.Api.Controllers
 {
@@ -54,14 +54,22 @@ namespace MediTap.Api.Controllers
         // PUT: api/symptom/5
         [Authorize(Roles = "Patient")]
         [HttpPut("{id}")]
-        public IActionResult UpdateSymptom(int id, SymptomUpdateDTO updatedSymptom)
+        public IActionResult UpdateSymptom(int id, Symptom symptom)
         {
-            _logger.LogInformation("Updating Symptom with ID: {Id}, Symptom: {Symptom}", id, updatedSymptom);
+            _logger.LogInformation("Updating Symptom with ID: {Id}, Symptom: {Symptom}", id, symptom);
+
+            // Validate that the ID in the URL matches the ID in the body
+            if (id != symptom.Id)
+            {
+                _logger.LogWarning("ID in URL does not match ID in body. URL ID: {UrlId}, Body ID: {BodyId}", id, symptom.Id);
+                return BadRequest("ID in URL does not match ID in body");
+            }
 
             // Let the services check if the symptom exist and if the patient is the owner of the symptom
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var authCheck = _symptomService.GetByIdIfAuthorized(id, userId);
-            if (!authCheck)
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            var existingSymptom = _symptomService.GetById(id, userId, role);
+            if (existingSymptom == null)
             {
                 _logger.LogWarning("Symptom with ID {Id} not found", id);
                 return NotFound();
@@ -70,7 +78,7 @@ namespace MediTap.Api.Controllers
             // Try updating the symptom
             try
             {
-                _symptomService.Update(updatedSymptom, id);
+                _symptomService.Update(symptom);
             }
             catch (Exception ex)
             {
@@ -78,7 +86,7 @@ namespace MediTap.Api.Controllers
                 return StatusCode(500, "An error occurred while updating the symptom");
             }
             _logger.LogInformation("Symptom with ID {Id} updated successfully", id);
-            return Ok(updatedSymptom);
+            return Ok(existingSymptom);
         }
 
 
@@ -96,8 +104,9 @@ namespace MediTap.Api.Controllers
             // Let the services check if the symptom exist and if the patient is the owner of the symptom
             _logger.LogInformation("Deleting Symptom with ID: {Id}", id);
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var authCheck = _symptomService.GetByIdIfAuthorized(id, userId);
-            if (!authCheck)
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            var symptom = _symptomService.GetById(id, userId, role);
+            if (symptom == null)
             {
                 _logger.LogWarning("Symptom with ID {Id} not found", id);
                 return NotFound();
