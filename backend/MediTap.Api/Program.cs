@@ -32,6 +32,10 @@ builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<ISymptomService, SymptomService>();
 builder.Services.AddScoped<IAffectionService, AffectionService>();
 builder.Services.AddScoped<IMedicationService, MedicationService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+
 
 
 // Adding the controllers

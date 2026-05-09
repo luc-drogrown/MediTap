@@ -15,9 +15,11 @@ namespace MediTap.Api.Services
         }
 
 
-        // TODO -> Check that the affection date is not in the future
         AffectionDTO IAffectionService.Add(AffectionCreationDTO affection, int userId)
         {
+            if(!isAffectionValid(affection)) { return null; }
+
+
             var affectionEntity = new Affection
             {
                 DiagnoseDate = affection.DiagnoseDate,
@@ -79,6 +81,17 @@ namespace MediTap.Api.Services
                 _logger.LogError(ex.Message);
                 throw;
             }
+        }
+
+        bool isAffectionValid(AffectionCreationDTO affection)
+        {
+            if(affection == null) { return false; }
+
+            // Checks if Diagnose date is in the past
+            if(affection.DiagnoseDate.CompareTo(DateTime.Now.Date) > 0) { return false; }
+
+            return true;
+
         }
     }
 }
