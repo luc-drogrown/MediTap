@@ -8,13 +8,11 @@
         public CNP CNP { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
-
+        public Email Email { get; set; }
         public string Uname { get; private set; }
         public string PasswordHash { get; set; }
 
         /// Non essential info about the patient
-        public Email? Email { get; set; }
 
         //TODO add a phone number class and exceptions for invalid phone numbers
         public PhoneNumber? PhoneNumber { get; set; }

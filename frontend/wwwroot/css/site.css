@@ -325,6 +325,9 @@ form .btn-primary {
     height: auto;
     margin: 40px auto;
 }
+    .register-card::after {
+        height: 240px;
+    }
 
 .write-card-page {
     width: 98vw;
