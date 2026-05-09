@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MediTap.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0c44f58502c34140d62e9fd780abc89c82bb40a6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fd3f69302ee3848fa42c7a49614f308a8632a58e")]
 [assembly: System.Reflection.AssemblyProductAttribute("MediTap.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MediTap.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
