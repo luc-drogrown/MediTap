@@ -16,11 +16,10 @@ namespace MediTap.Api.Services.Interfaces
             _context = context;
         }
 
-        // TODO --> Make a DTO for Medic and one for the Patient so that they don't have to type out their own id
         AppointmentDTO IAppointmentService.Add(AppointmentCreationDTO appointment, int userId, string role)
         {
             if(appointment == null) { return null; }
-            if(!IsAppointmentDateFree(appointment) || !IsAppointmentValid(appointment)) { return null; }
+            if(!IsAppointmentDateFree(appointment, userId, role) || !IsAppointmentValid(appointment)) { return null; }
             
             
             // make sure the userID is equal to apppointment.MedicId or apppointment.PatientID depending on the role of the user
@@ -35,8 +34,8 @@ namespace MediTap.Api.Services.Interfaces
                 Description = appointment.Description ?? null,
 
                 // Foreign keys
-                MedicId = appointment.MedicId,
-                PatientId = appointment.PatientId,
+                MedicId = role == "Medic" ? userId : appointment.OtherUserId,
+                PatientId = role == "Patient" ? userId : appointment.OtherUserId,
             };
 
             _context.Appointments.Add(appointmentEntity);
@@ -73,16 +72,19 @@ namespace MediTap.Api.Services.Interfaces
             return true;
         }
 
-        bool IsAppointmentDateFree(AppointmentCreationDTO appointment)
+        bool IsAppointmentDateFree(AppointmentCreationDTO appointment, int userId, string role)
         {
             var windowStart = appointment.Date.AddMinutes(-15);
             var windowEnd = appointment.Date.AddMinutes(15);
+
+            int MedicId = role == "Medic" ? userId : appointment.OtherUserId;
+            int PatientId = role == "Patient" ? userId : appointment.OtherUserId;
 
             // Ask the database if ANY appointment overlaps this window 
             // for EITHER the Medic OR the Patient.
             bool hasConflict = _context.Appointments
                 .Any(a =>
-                    (a.MedicId == appointment.MedicId || a.PatientId == appointment.PatientId)
+                    (a.MedicId == MedicId || a.PatientId == PatientId)
                     &&
                     (a.Date > windowStart && a.Date < windowEnd)
                 );
@@ -94,13 +96,15 @@ namespace MediTap.Api.Services.Interfaces
         bool CheckValidity(AppointmentCreationDTO appointment, int userId, string role)
         {
             bool isAuth;
+            int MedicId = role == "Medic" ? userId : appointment.OtherUserId;
+            int PatientId = role == "Patient" ? userId : appointment.OtherUserId;
             switch (role)
             {
                 case "Medic":
-                    isAuth = userId == appointment.MedicId; break;
+                    isAuth = userId == MedicId; break;
 
                 case "Patient":
-                    isAuth = userId == appointment.PatientId; break;
+                    isAuth = userId == PatientId; break;
 
                 default:
                     isAuth = false; break;

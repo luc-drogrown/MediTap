@@ -77,18 +77,23 @@ namespace MediTap.Api.Controllers
             _logger.LogInformation("Creating a new appointment: {Appointment}", appointment);
             try
             {
+                // Fethcing the MedicId & PatientId
+                int MedicId = role == "Medic" ? userId : appointment.OtherUserId;
+                int PatientId = role == "Patient" ? userId : appointment.OtherUserId;
+
+
                 // Check that the user is either the medic or the patient associated with the appointment
                 // AKA, the patient and the medic are linked togheter
                 bool isAuth;
                 switch ( role)
                 {
                     case "Medic":
-                        isAuth = _authService.IsPatientMedicLinked(appointment.PatientId, userId);
+                        isAuth = _authService.IsPatientMedicLinked(PatientId, userId);
                         break;
 
 
                     case "Patient":
-                        isAuth = _authService.IsPatientMedicLinked(userId, appointment.MedicId);
+                        isAuth = _authService.IsPatientMedicLinked(userId, MedicId);
                         break;
 
                     default: isAuth = false; 
@@ -99,7 +104,7 @@ namespace MediTap.Api.Controllers
                 if (!isAuth)
                 {
                     // Permission denied
-                    _logger.LogError($"User with Id {userId} and role {role} failed to create an appointment.");
+                    _logger.LogError($"User with Id {userId} and role {role} failed to create an appointment. Authentication failed");
                     return BadRequest();
                 }
                 else
