@@ -56,6 +56,57 @@ namespace MediTap.Api.Services
             }
         }
 
+        IEnumerable<MedicSummaryDTO> IMedicService.GetAllForAdmin()
+        {
+            try
+            {
+                return _context.Medics
+                    .Include(m => m.Patients)
+                    .Include(m => m.Appointments)
+                    .OrderBy(m => m.Id)
+                    .Select(m => new MedicSummaryDTO(m))
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while retrieving all medics for admin.");
+                throw;
+            }
+        }
+
+        void IMedicService.DisableAccount(int medicId)
+        {
+            var medic = _context.Medics.FirstOrDefault(m => m.Id == medicId);
+
+            if (medic == null)
+            {
+                throw new InvalidOperationException("Medic account was not found.");
+            }
+
+            if (medic.Id == 1)
+            {
+                throw new InvalidOperationException("The admin account cannot be disabled.");
+            }
+
+            medic.MedicStatus = MedicStatus.Inactive;
+
+            _context.SaveChanges();
+        }
+
+        void IMedicService.EnableAccount(int medicId)
+        {
+            var medic = _context.Medics.FirstOrDefault(m => m.Id == medicId);
+
+            if (medic == null)
+            {
+                throw new InvalidOperationException("Medic account was not found.");
+            }
+
+            medic.MedicStatus = MedicStatus.Active;
+
+            _context.SaveChanges();
+        }
+
         MedicSummaryDTO IMedicService.GetById(int id)
         {
             var medic = _context.Medics

@@ -8,6 +8,11 @@ namespace MediTap.Api.Services.Interfaces
     public interface IPatientService
     {
         Patient Create(PatientCreationDTO request);
+        IEnumerable<PatientSummaryDTO> GetAllForAdmin();
+
+        void DisableAccount(int patientId);
+        void EnableAccount(int patientId);
+
         PatientDTO GetLoggedInPatient(int loggedInUserId);
         PatientSummaryDTO GetProfileSummary(int id);
         IEnumerable<AppointmentDTO> GetAppointment(int id, int loggedInUserId, string role);

@@ -62,6 +62,36 @@ namespace MediTap.Front.Controllers
             return View();
         }
 
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPasswordSubmit(string email)
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/password-reset/request", new
+            {
+                email = email,
+                role = "Medic"
+            });
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+
+                ViewBag.Error = string.IsNullOrWhiteSpace(error)
+                    ? "Could not submit password reset request."
+                    : error;
+
+                return View("ForgotPassword");
+            }
+
+            ViewBag.Success = "If this email exists, a password reset request has been sent to the administrator.";
+
+            return View("ForgotPassword");
+        }
+
         public IActionResult Dashboard()
         {
             return View();

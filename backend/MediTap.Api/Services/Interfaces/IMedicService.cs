@@ -15,6 +15,10 @@ namespace MediTap.Api.Services.Interfaces
 
         MedicSummaryDTO GetById(int id);
         Medic Create(MedicCreationDTO request);
+        IEnumerable<MedicSummaryDTO> GetAllForAdmin();
+
+        void DisableAccount(int medicId);
+        void EnableAccount(int medicId);
 
         PatientSummaryDTO Scan(PatientScanDTO request, int userId, string role);
 

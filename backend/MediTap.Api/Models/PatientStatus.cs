@@ -1,6 +1,6 @@
 ﻿namespace MediTap.Api.Models
 {
-    public enum MedicStatus
+    public enum PatientStatus
     {
         Active,
         Inactive

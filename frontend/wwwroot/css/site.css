@@ -347,3 +347,333 @@ form .btn-primary {
     font-size: 90px;
     margin-bottom: 20px;
 }
+
+.dashboard-table-card {
+    margin-top: 30px;
+    background: #F8FFFF;
+    border: 1px solid #DDF5F4;
+    border-radius: 24px;
+    overflow: auto;
+    max-height: 600px;
+}
+
+.admin-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.admin-table th,
+.admin-table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.admin-table .col-id {
+    width: 70px;
+}
+
+.admin-table .col-name {
+    width: 160px;
+}
+
+.admin-table .col-cnp {
+    width: 180px;
+}
+
+.admin-table .col-email {
+    width: 260px;
+}
+
+.admin-table .col-phone {
+    width: 160px;
+}
+
+    .admin-table th {
+        text-align: left;
+        color: #0F766E;
+        font-weight: 700;
+        padding: 14px 12px;
+        border-bottom: 2px solid #CCFBF1;
+        background-color: #F0FDFA;
+    }
+
+    .admin-table td {
+        padding: 14px 12px;
+        border-bottom: 1px solid #E0F2F1;
+        color: #334155;
+    }
+
+    .admin-table thead th {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+    }
+
+.admin-page-header {
+    margin-bottom: 28px;
+}
+
+.admin-page-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+.admin-page-header h1 {
+    margin: 0;
+}
+
+.admin-page-header p {
+    margin-top: 4px;
+}
+
+.admin-search-wrapper {
+    position: relative;
+    width: 420px;
+    max-width: 100%;
+}
+
+.admin-search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #0F8B8D;
+    font-size: 20px;
+    pointer-events: none;
+}
+
+.admin-search-input {
+    width: 100%;
+    padding: 14px 16px 14px 46px;
+    border: 1px solid #BEE3E2;
+    border-radius: 16px;
+    outline: none;
+    font-size: 15px;
+    color: #134E4A;
+    background-color: #FFFFFF;
+    box-shadow: 0 8px 20px rgba(15, 118, 110, 0.08);
+}
+
+    .admin-search-input:focus {
+        border-color: #0F8B8D;
+        box-shadow: 0 0 0 4px rgba(15, 139, 141, 0.12);
+    }
+
+.manage-section {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.manage-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 10px;
+}
+
+    .manage-section-header h2 {
+        margin: 0;
+        color: #134E4A;
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+    .manage-section-header p {
+        margin: 4px 0 0 0;
+        color: #64748B;
+        font-size: 14px;
+    }
+
+.small-table-card {
+    max-height: 300px;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.status-active {
+    color: #0F766E;
+    background-color: #CCFBF1;
+}
+
+.status-pending {
+    color: #92400E;
+    background-color: #FEF3C7;
+}
+
+.manage-reset-summary {
+    margin: 18px 0 12px 0;
+}
+
+.reset-summary-btn {
+    width: 100%;
+    border: 1px solid #DDF5F4;
+    background: #F8FFFF;
+    border-radius: 18px;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #134E4A;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(15, 118, 110, 0.05);
+}
+
+    .reset-summary-btn:hover {
+        background: #F0FDFA;
+    }
+
+.reset-requests-panel {
+    margin-top: 14px;
+}
+
+.accounts-table-card {
+    max-height: 470px;
+    overflow: auto;
+}
+
+.dashboard-layout {
+    min-height: calc(100vh - 32px);
+    max-height: none;
+}
+
+.dashboard-content {
+    overflow-y: auto;
+    max-height: calc(100vh - 32px);
+    padding-bottom: 40px;
+}
+
+.manage-accounts-page .admin-page-header {
+    margin-bottom: 12px;
+}
+
+.manage-accounts-page .manage-reset-summary {
+    margin: 10px 0 14px 0;
+}
+
+.manage-accounts-page .reset-summary-btn {
+    padding: 10px 18px;
+}
+
+.manage-accounts-page .manage-section-header {
+    margin-bottom: 10px;
+}
+
+.forgot-password-text {
+    color: #334155;
+    font-size: 15px;
+    margin-bottom: 22px;
+    text-align: center;
+}
+
+.table-action-btn {
+    border: 1px solid #BEE3E2;
+    background: #FFFFFF;
+    color: #0F766E;
+    border-radius: 999px;
+    padding: 7px 13px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-right: 6px;
+}
+
+    .table-action-btn:hover {
+        background: #F0FDFA;
+    }
+
+    .table-action-btn.danger {
+        color: #B91C1C;
+        border-color: #FECACA;
+    }
+
+        .table-action-btn.danger:hover {
+            background: #FEF2F2;
+        }
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal-card {
+    width: 460px;
+    max-width: calc(100% - 32px);
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+    border: 1px solid #DDF5F4;
+}
+
+    .modal-card h2 {
+        margin-top: 0;
+        color: #0F8B8D;
+    }
+
+.modal-subtitle {
+    color: #334155;
+    margin-bottom: 20px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.modal-btn {
+    flex: 1;
+    height: 56px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.modal-btn-primary {
+    border: none;
+    background-color: #0F8B8D;
+    color: #FFFFFF;
+    box-shadow: 0 10px 20px rgba(15, 139, 141, 0.22);
+}
+
+.modal-btn-secondary {
+    border: 2px solid #0F8B8D;
+    background-color: #FFFFFF;
+    color: #0F8B8D;
+}
+
+.modal-btn-primary:hover {
+    background-color: #0B7A7C;
+}
+
+.modal-btn-secondary:hover {
+    background-color: #F0FDFA;
+}
+
+.status-inactive {
+    color: #991B1B;
+    background-color: #FEE2E2;
+}

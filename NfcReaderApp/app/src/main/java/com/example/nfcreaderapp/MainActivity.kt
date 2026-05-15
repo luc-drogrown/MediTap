@@ -24,10 +24,11 @@ class MainActivity : ComponentActivity() {
     private lateinit var textView: TextView
     private lateinit var editText: android.widget.EditText
     private lateinit var writeButton: android.widget.Button
-    private val IP = "192.168.100.152";
+    private val IP = "172.27.139.138";
     private val serverUrl = "http://$IP:5115/Nfc/Scan"
     private val pendingWriteUrl = "http://$IP:5115/Nfc/GetPendingWrite"
     private val confirmWriteUrl = "http://$IP:5115/Nfc/ConfirmWrite"
+    private val canWriteUrl = "http://$IP:5115/Nfc/CanWrite"
     private var writeMode = false
     private var currentTag: Tag? = null
     private var pendingPatientUname: String? = null
@@ -87,7 +88,7 @@ class MainActivity : ComponentActivity() {
 
         handleNfcIntent(intent)
         pollRunnable = Runnable{
-            if(pendingPatientUname==null&& !writeMode){
+            if (!writeMode) {
                 checkPendingWrite()
             }
             handler.postDelayed(pollRunnable, 3000)
@@ -139,15 +140,38 @@ class MainActivity : ComponentActivity() {
         if (writeMode && currentTag != null) {
             val dataToWrite = pendingPatientUname
 
-            if (!dataToWrite.isNullOrEmpty()) {
-                writeToTag(dataToWrite, currentTag)
-
+            if (dataToWrite.isNullOrEmpty()) {
                 writeMode = false
                 pendingPatientUname = null
                 writeButton.isEnabled = false
                 writeButton.text = "Write patient card"
-            } else {
+
                 Toast.makeText(this, "No patient data available", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            thread {
+                val canWrite = canWriteOnServer()
+
+                runOnUiThread {
+                    if (!canWrite) {
+                        writeMode = false
+                        pendingPatientUname = null
+                        writeButton.isEnabled = false
+                        writeButton.text = "Write patient card"
+                        textView.text = "Card writing was cancelled"
+
+                        Toast.makeText(this, "Registration was cancelled. Card was not written.", Toast.LENGTH_SHORT).show()
+                        return@runOnUiThread
+                    }
+
+                    writeToTag(dataToWrite, currentTag)
+
+                    writeMode = false
+                    pendingPatientUname = null
+                    writeButton.isEnabled = false
+                    writeButton.text = "Write patient card"
+                }
             }
 
             return
@@ -195,6 +219,27 @@ class MainActivity : ComponentActivity() {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
+        }
+    }
+
+    private fun canWriteOnServer(): Boolean {
+        return try {
+            val url = URL(canWriteUrl)
+            val conn = url.openConnection() as HttpURLConnection
+
+            conn.requestMethod = "GET"
+
+            if (conn.responseCode != 200) {
+                return false
+            }
+
+            val response = conn.inputStream.bufferedReader().readText()
+            val json = org.json.JSONObject(response)
+
+            json.optBoolean("canWrite", false)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
         }
     }
 
@@ -247,6 +292,20 @@ class MainActivity : ComponentActivity() {
                        val response = conn.inputStream.bufferedReader().readText()
 
                        val json = org.json.JSONObject(response)
+
+                       if (json.optBoolean("cancelled", false)) {
+                           pendingPatientUname = null
+                           writeMode = false
+
+                           runOnUiThread {
+                               textView.text = "Card writing was cancelled"
+                               writeButton.isEnabled = false
+                               writeButton.text = "Write patient card"
+                           }
+
+                           return@thread
+                       }
+
                        val patientUname = json.getString("patientUname")
 
                        pendingPatientUname = patientUname
