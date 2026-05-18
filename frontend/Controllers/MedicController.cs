@@ -33,7 +33,12 @@ namespace MediTap.Front.Controllers
 
             if (!response.IsSuccessStatusCode)
             {
-                ViewBag.Error = "Invalid username or password";
+                var error = await response.Content.ReadAsStringAsync();
+
+                ViewBag.Error = string.IsNullOrWhiteSpace(error)
+                    ? "Invalid email or password."
+                    : error;
+
                 return View("Login");
             }
 

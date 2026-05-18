@@ -30,10 +30,15 @@ namespace MediTap.Front.Controllers
                 password = password,
                 role = "Patient"
             });
-            
+
             if (!response.IsSuccessStatusCode)
             {
-                ViewBag.Error = "Invalid username or password";
+                var error = await response.Content.ReadAsStringAsync();
+
+                ViewBag.Error = string.IsNullOrWhiteSpace(error)
+                    ? "Invalid email or password."
+                    : error;
+
                 return View("Login");
             }
 

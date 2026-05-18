@@ -6,10 +6,10 @@
 
 <div class="dashboard-layout">
     <aside class="sidebar">
-        <div class="sidebar-brand">
+        <a class="sidebar-brand sidebar-brand-link" href="/Admin/Dashboard">
             <img src="~/images/logo.png" alt="MediTap Logo" class="sidebar-logo" />
             <span>MediTap</span>
-        </div>
+        </a>
 
         <a class="sidebar-link" href="/Admin/RegisterPatient">Register Patient</a>
         <a class="sidebar-link" href="/Admin/RegisterMedic">Register Medic</a>
@@ -24,14 +24,6 @@
         <div class="admin-page-header">
             <div class="admin-page-title-row">
                 <h1>Manage Accounts</h1>
-
-                <div class="admin-search-wrapper">
-                    <span class="admin-search-icon">⌕</span>
-                    <input id="adminSearchInput"
-                           class="admin-search-input"
-                           type="text"
-                           placeholder="Search by name, email, role, or status..." />
-                </div>
             </div>
 
             <p>Manage patient and medic accounts in the MediTap system.</p>
@@ -75,9 +67,8 @@
                                     <th>Email</th>
                                     <th>Role</th>
                                     <th>Status</th>
-                                    <th>Actions</th>
                                     <th>Requested At</th>
-                                    <th>Actions</th>
+                                    <th class="col-reset-actions">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -89,22 +80,23 @@
                                         <td>@request.Role</td>
                                         <td>@request.Status</td>
                                         <td>@request.RequestedAt.ToString("dd MMM yyyy HH:mm")</td>
-                                        <td>
-                                            <button type="button"
-                                                    class="table-action-btn"
-                                                    onclick="openResetPasswordModal('@request.Id', '@request.Email', '@request.Role')">
-                                                Reset
-                                            </button>
-
-                                            <form asp-controller="Admin"
-                                                  asp-action="RejectPasswordReset"
-                                                  method="post"
-                                                  style="display:inline;">
-                                                <input type="hidden" name="requestId" value="@request.Id" />
-                                                <button type="submit" class="table-action-btn danger">
-                                                    Reject
+                                        <td class="actions-cell">
+                                            <div class="table-actions">
+                                                <button type="button"
+                                                        class="table-action-btn"
+                                                        onclick="openResetPasswordModal('@request.Id', '@request.Email', '@request.Role')">
+                                                    Reset
                                                 </button>
-                                            </form>
+
+                                                <form asp-controller="Admin"
+                                                      asp-action="RejectPasswordReset"
+                                                      method="post">
+                                                    <input type="hidden" name="requestId" value="@request.Id" />
+                                                    <button type="submit" class="table-action-btn danger">
+                                                        Reject
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 }
@@ -116,10 +108,18 @@
         </section>
 
         <section class="manage-section">
-            <div class="manage-section-header">
+            <div class="manage-section-header accounts-section-header">
                 <div>
                     <h2>Accounts</h2>
                     <p>All patient and medic accounts currently registered.</p>
+                </div>
+
+                <div class="admin-search-wrapper">
+                    <span class="admin-search-icon">⌕</span>
+                    <input id="adminSearchInput"
+                           class="admin-search-input"
+                           type="text"
+                           placeholder="Search by name, email, role, or status..." />
                 </div>
             </div>
 
@@ -134,11 +134,12 @@
                         <thead>
                             <tr>
                                 <th class="col-id">ID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Role</th>
-                                <th>Status</th>
+                                <th class="col-account-name">Name</th>
+                                <th class="col-account-email">Email</th>
+                                <th class="col-account-phone">Phone</th>
+                                <th class="col-account-role">Role</th>
+                                <th class="col-account-status">Status</th>
+                                <th class="col-account-actions">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -155,34 +156,56 @@
                                             @account.Status
                                         </span>
                                     </td>
-                                    <td>
-                                        @if (account.Status == "Active")
+                                    <td class="actions-cell">
+                                        @if (account.Role == "Medic" && account.Id == 1)
                                         {
-                                            <form asp-controller="Admin"
-                                                  asp-action="DisableAccount"
-                                                  method="post"
-                                                  style="display:inline;">
-                                                <input type="hidden" name="accountId" value="@account.Id" />
-                                                <input type="hidden" name="role" value="@account.Role" />
-
-                                                <button type="submit" class="table-action-btn danger">
-                                                    Disable
-                                                </button>
-                                            </form>
+                                            <span class="table-muted-text">
+                                                Admin account
+                                            </span>
                                         }
                                         else
                                         {
-                                            <form asp-controller="Admin"
-                                                  asp-action="EnableAccount"
-                                                  method="post"
-                                                  style="display:inline;">
-                                                <input type="hidden" name="accountId" value="@account.Id" />
-                                                <input type="hidden" name="role" value="@account.Role" />
-
-                                                <button type="submit" class="table-action-btn">
-                                                    Enable
+                                            <div class="table-actions">
+                                                <button type="button"
+                                                        class="table-action-btn"
+                                                        onclick="openEditAccountModal(
+                                                    '@account.Id',
+                                                    '@account.Role',
+                                                    '@account.FirstName',
+                                                    '@account.LastName',
+                                                    '@account.Email',
+                                                    '@account.PhoneNumber',
+                                                    '@account.Address')">
+                                                    Edit
                                                 </button>
-                                            </form>
+
+                                                @if (account.Status == "Active")
+                                                {
+                                                    <form asp-controller="Admin"
+                                                          asp-action="DisableAccount"
+                                                          method="post">
+                                                        <input type="hidden" name="accountId" value="@account.Id" />
+                                                        <input type="hidden" name="role" value="@account.Role" />
+
+                                                        <button type="submit" class="table-action-btn danger">
+                                                            Disable
+                                                        </button>
+                                                    </form>
+                                                }
+                                                else
+                                                {
+                                                    <form asp-controller="Admin"
+                                                          asp-action="EnableAccount"
+                                                          method="post">
+                                                        <input type="hidden" name="accountId" value="@account.Id" />
+                                                        <input type="hidden" name="role" value="@account.Role" />
+
+                                                        <button type="submit" class="table-action-btn">
+                                                            Enable
+                                                        </button>
+                                                    </form>
+                                                }
+                                            </div>
                                         }
                                     </td>
                                 </tr>
@@ -229,6 +252,76 @@
 
                 <button type="submit" class="modal-btn modal-btn-primary">
                     Save Password
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="editAccountModal" class="modal-overlay" style="display:none;">
+    <div class="modal-card">
+        <h2>Edit Account</h2>
+
+        <p id="editAccountInfo" class="modal-subtitle"></p>
+
+        <form asp-controller="Admin" asp-action="UpdateAccount" method="post">
+            <input type="hidden" id="editAccountId" name="accountId" />
+            <input type="hidden" id="editAccountRole" name="role" />
+
+            <div class="form-group">
+                <label>First Name</label>
+                <input id="editFirstName"
+                       type="text"
+                       name="firstName"
+                       placeholder="Enter first name"
+                       required />
+            </div>
+
+            <div class="form-group">
+                <label>Last Name</label>
+                <input id="editLastName"
+                       type="text"
+                       name="lastName"
+                       placeholder="Enter last name"
+                       required />
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input id="editEmail"
+                       type="email"
+                       name="email"
+                       placeholder="Enter email"
+                       required
+                       oninvalid="this.setCustomValidity('Please enter a valid email address.')"
+                       oninput="this.setCustomValidity('')" />
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input id="editPhoneNumber"
+                       type="text"
+                       name="phoneNumber"
+                       placeholder="Enter phone number" />
+            </div>
+
+            <div id="editAddressGroup" class="form-group">
+                <label>Address</label>
+                <input id="editAddress"
+                       type="text"
+                       name="address"
+                       placeholder="Enter address" />
+            </div>
+
+            <div class="modal-actions">
+                <button type="button"
+                        class="modal-btn modal-btn-secondary"
+                        onclick="closeEditAccountModal()">
+                    Cancel
+                </button>
+
+                <button type="submit" class="modal-btn modal-btn-primary">
+                    Save Changes
                 </button>
             </div>
         </form>
@@ -289,4 +382,36 @@
             });
         }
     });
+
+    function safeValue(value) {
+        return value === null || value === "null" || value === undefined
+            ? ""
+            : value;
+    }
+
+    function openEditAccountModal(id, role, firstName, lastName, email, phoneNumber, address) {
+        document.getElementById("editAccountId").value = safeValue(id);
+        document.getElementById("editAccountRole").value = safeValue(role);
+        document.getElementById("editFirstName").value = safeValue(firstName);
+        document.getElementById("editLastName").value = safeValue(lastName);
+        document.getElementById("editEmail").value = safeValue(email);
+        document.getElementById("editPhoneNumber").value = safeValue(phoneNumber);
+        document.getElementById("editAddress").value = safeValue(address);
+
+        document.getElementById("editAccountInfo").innerText =
+            `Editing ${role} account`;
+
+        if (role === "Patient") {
+            document.getElementById("editAddressGroup").style.display = "block";
+        } else {
+            document.getElementById("editAddressGroup").style.display = "none";
+            document.getElementById("editAddress").value = "";
+        }
+
+        document.getElementById("editAccountModal").style.display = "flex";
+    }
+
+    function closeEditAccountModal() {
+        document.getElementById("editAccountModal").style.display = "none";
+    }
 </script>

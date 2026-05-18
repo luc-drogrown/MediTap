@@ -1,13 +1,15 @@
-﻿@{
+﻿@model MediTap.Front.Models.Admin.AdminDashboardViewModel
+
+@{
     ViewData["Title"] = "Admin Dashboard";
 }
 
 <div class="dashboard-layout">
     <aside class="sidebar">
-        <div class="sidebar-brand">
+        <a class="sidebar-brand sidebar-brand-link" href="/Admin/Dashboard">
             <img src="~/images/logo.png" alt="MediTap Logo" class="sidebar-logo" />
             <span>MediTap</span>
-        </div>
+        </a>
 
         <a class="sidebar-link" href="/Admin/RegisterPatient">Register Patient</a>
         <a class="sidebar-link" href="/Admin/RegisterMedic">Register Medic</a>
@@ -19,7 +21,34 @@
     </aside>
 
     <main class="dashboard-content">
-        <h1>Admin Dashboard</h1>
-        <p>Welcome back. Choose an action from the sidebar.</p>
+        <div class="admin-page-header">
+            <div class="admin-page-title-row">
+                <h1>Admin Dashboard</h1>
+            </div>
+
+            <p>Welcome back. Here is a quick overview of the MediTap system.</p>
+        </div>
+
+        <div class="dashboard-overview-grid">
+            <div class="dashboard-overview-card">
+                <span class="overview-label">Total Patients</span>
+                <strong>@Model.TotalPatients</strong>
+            </div>
+
+            <div class="dashboard-overview-card">
+                <span class="overview-label">Total Medics</span>
+                <strong>@Model.TotalMedics</strong>
+            </div>
+
+            <div class="dashboard-overview-card">
+                <span class="overview-label">Pending Reset Requests</span>
+                <strong>@Model.PendingPasswordResetRequests</strong>
+            </div>
+
+            <div class="dashboard-overview-card">
+                <span class="overview-label">Inactive Accounts</span>
+                <strong>@Model.InactiveAccounts</strong>
+            </div>
+        </div>
     </main>
 </div>

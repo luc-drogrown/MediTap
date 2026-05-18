@@ -101,6 +101,7 @@ namespace MediTap.Api.Services
                         CNP = p.CNP.CodNumericPersonal,
                         Email = p.Email != null ? p.Email.EmailAddress : null,
                         PhoneNumber = p.PhoneNumber != null ? p.PhoneNumber.Number : null,
+                        Address = p.Address,
                         Status = p.PatientStatus.ToString()
                     })
                     .ToList();
@@ -136,6 +137,26 @@ namespace MediTap.Api.Services
             }
 
             patient.PatientStatus = PatientStatus.Active;
+
+            _context.SaveChanges();
+        }
+
+        void IPatientService.UpdateAccountForAdmin(int patientId, PatientAdminUpdateDTO request)
+        {
+            var patient = _context.Patients.FirstOrDefault(p => p.Id == patientId);
+
+            if (patient == null)
+            {
+                throw new InvalidOperationException("Patient account was not found.");
+            }
+
+            patient.FirstName = request.FirstName;
+            patient.LastName = request.LastName;
+            patient.Email = new Email(request.Email);
+            patient.PhoneNumber = string.IsNullOrWhiteSpace(request.PhoneNumber)
+                ? null
+                : new PhoneNumber(request.PhoneNumber);
+            patient.Address = request.Address ?? string.Empty;
 
             _context.SaveChanges();
         }

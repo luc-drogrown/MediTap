@@ -12,6 +12,7 @@ namespace MediTap.Api.Services.Interfaces
 
         void DisableAccount(int patientId);
         void EnableAccount(int patientId);
+        void UpdateAccountForAdmin(int patientId, PatientAdminUpdateDTO request);
 
         PatientDTO GetLoggedInPatient(int loggedInUserId);
         PatientSummaryDTO GetProfileSummary(int id);

@@ -166,7 +166,56 @@ namespace MediTap.Api.Controllers
             }
         }
 
+        // Update a patient account
+        // Admin is the Medic with Id = 1
+        // PUT: api/patient/admin/{patientId}/update
+        [Authorize(Roles = "Medic")]
+        [HttpPut("admin/{patientId}/update")]
+        public IActionResult UpdatePatientAccountForAdmin(int patientId, [FromBody] PatientAdminUpdateDTO request)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
+            if (userId != 1)
+            {
+                _logger.LogWarning("Unauthorized attempt to update patient account by user ID: {UserId}", userId);
+                return NotFound();
+            }
+
+            try
+            {
+                _patientService.UpdateAccountForAdmin(patientId, request);
+
+                _logger.LogInformation(
+                    "Patient account updated successfully by admin user ID: {UserId}. Patient ID: {PatientId}",
+                    userId,
+                    patientId);
+
+                return Ok(new
+                {
+                    message = "Patient account updated successfully."
+                });
+            }
+            catch (InvalidEmailException ex)
+            {
+                _logger.LogWarning(ex, "Invalid email while updating patient account. Patient ID: {PatientId}", patientId);
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidPhoneNumberException ex)
+            {
+                _logger.LogWarning(ex, "Invalid phone number while updating patient account. Patient ID: {PatientId}", patientId);
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Patient account could not be updated. Patient ID: {PatientId}", patientId);
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating patient account. Patient ID: {PatientId}", patientId);
+                return StatusCode(500, "An error occurred while updating the patient account.");
+            }
+        }
 
         // Show all patients with pagination
         // GET: api/patient?pageNumber=1

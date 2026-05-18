@@ -149,6 +149,57 @@ namespace MediTap.Api.Controllers
             }
         }
 
+        // Update a medic account
+        // Admin is the Medic with Id = 1
+        // PUT: api/medic/admin/{medicId}/update
+        [Authorize(Roles = "Medic")]
+        [HttpPut("admin/{medicId}/update")]
+        public IActionResult UpdateMedicAccountForAdmin(int medicId, [FromBody] MedicAdminUpdateDTO request)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            if (userId != 1)
+            {
+                _logger.LogWarning("Unauthorized attempt to update medic account by user ID: {UserId}", userId);
+                return NotFound();
+            }
+
+            try
+            {
+                _medicService.UpdateAccountForAdmin(medicId, request);
+
+                _logger.LogInformation(
+                    "Medic account updated successfully by admin user ID: {UserId}. Medic ID: {MedicId}",
+                    userId,
+                    medicId);
+
+                return Ok(new
+                {
+                    message = "Medic account updated successfully."
+                });
+            }
+            catch (InvalidEmailException ex)
+            {
+                _logger.LogWarning(ex, "Invalid email while updating medic account. Medic ID: {MedicId}", medicId);
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidPhoneNumberException ex)
+            {
+                _logger.LogWarning(ex, "Invalid phone number while updating medic account. Medic ID: {MedicId}", medicId);
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Medic account could not be updated. Medic ID: {MedicId}", medicId);
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating medic account. Medic ID: {MedicId}", medicId);
+                return StatusCode(500, "An error occurred while updating the medic account.");
+            }
+        }
+
         // Create Medic profile
         // Can only be done by an admin (MedicId = 1)
         // POST: api/medic

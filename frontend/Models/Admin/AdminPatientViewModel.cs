@@ -15,5 +15,7 @@
         public string? PhoneNumber { get; set; }
 
         public string Status { get; set; } = string.Empty;
+
+        public string? Address { get; set; }
     }
 }

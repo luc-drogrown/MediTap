@@ -107,6 +107,25 @@ namespace MediTap.Api.Services
             _context.SaveChanges();
         }
 
+        void IMedicService.UpdateAccountForAdmin(int medicId, MedicAdminUpdateDTO request)
+        {
+            var medic = _context.Medics.FirstOrDefault(m => m.Id == medicId);
+
+            if (medic == null)
+            {
+                throw new InvalidOperationException("Medic account was not found.");
+            }
+
+            medic.FirstName = request.FirstName;
+            medic.LastName = request.LastName;
+            medic.Email = new Email(request.Email);
+            medic.PhoneNumber = string.IsNullOrWhiteSpace(request.PhoneNumber)
+                ? null
+                : new PhoneNumber(request.PhoneNumber);
+
+            _context.SaveChanges();
+        }
+
         MedicSummaryDTO IMedicService.GetById(int id)
         {
             var medic = _context.Medics
