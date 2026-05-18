@@ -1,11 +1,13 @@
 ﻿@{
     ViewData["Title"] = "Write Patient Card";
+    var patientUname = TempData["PatientUname"]?.ToString();
+    var pendingRegistrationId = TempData["PendingRegistrationId"]?.ToString();
 }
 
 <div class="write-card-page">
     <div class="scan-box">
 
-        <h1>Patient Registered Successfully</h1>
+        <h1 id="writeTitle">Write Patient Card</h1>
 
         <i class="bi bi-credit-card-2-front"></i>
 
@@ -14,6 +16,12 @@
         <small id="writeSubtext">
             Open the Android app and tap the NFC card.
         </small>
+
+        <button id="cancelWriteBtn"
+                type="button"
+                class="btn btn-success scan-profile-btn">
+            Cancel Registration
+        </button>
 
         <a id="backToAdminBtn"
                href="/Admin/Dashboard"
@@ -26,8 +34,43 @@
 </div>
 
 <script>
-    fetch("/Nfc/StartWrite?uname=@TempData["PatientUname"]");
+    const patientUname = '@TempData["PatientUname"]';
+    const pendingRegistrationId = '@TempData["PendingRegistrationId"]';
+
+    fetch(`/Nfc/StartWrite?uname=${encodeURIComponent(patientUname)}&pendingId=${encodeURIComponent(pendingRegistrationId)}`);
+
     document.getElementById("backToAdminBtn").style.display = "none";
+
+    document.getElementById("cancelWriteBtn").addEventListener("click", async function () {
+        const response = await fetch("/Nfc/CancelWrite", {
+            method: "POST"
+        });
+
+        if (!response.ok) {
+            const error = await response.text();
+
+            document.getElementById("writeStatus").innerText =
+                "Could not cancel registration.";
+
+            document.getElementById("writeSubtext").innerText =
+                error;
+
+            return;
+        }
+
+            document.getElementById("writeTitle").innerText =
+        "Registration Cancelled";
+
+    document.getElementById("writeStatus").innerText =
+        "The registration process was cancelled!";
+
+    document.getElementById("writeSubtext").innerText =
+        "The patient was not saved and no card was written.";
+
+        document.getElementById("cancelWriteBtn").style.display = "none";
+        document.getElementById("backToAdminBtn").style.display = "block";
+    });
+
     setInterval(async function () {
         const response = await fetch("/Nfc/GetWriteStatus");
 
@@ -35,14 +78,30 @@
 
         const data = await response.json();
 
-            if (data.completed === true) {
-        document.getElementById("writeStatus").innerText =
-            "Card written successfully.";
+        if (data.error) {
+            document.getElementById("writeStatus").innerText =
+                "Card was written, but patient registration failed.";
 
-        document.getElementById("writeSubtext").innerText =
-            "The patient card is now ready.";
+            document.getElementById("writeSubtext").innerText =
+                data.error;
 
-        document.getElementById("backToAdminBtn").style.display = "block";
-    }
+            document.getElementById("cancelWriteBtn").style.display = "none";
+            document.getElementById("backToAdminBtn").style.display = "block";
+            return;
+        }
+
+        if (data.completed === true) {
+            document.getElementById("writeTitle").innerText =
+                "Patient Registered Successfully";
+
+            document.getElementById("writeStatus").innerText =
+                "Card written and patient registered successfully.";
+                
+            document.getElementById("writeSubtext").innerText =
+                "The patient card is now ready.";
+
+            document.getElementById("cancelWriteBtn").style.display = "none";
+            document.getElementById("backToAdminBtn").style.display = "block";
+        }
     }, 1000);
 </script>

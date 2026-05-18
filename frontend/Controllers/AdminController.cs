@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MediTap.Front.Models.Admin;
 
 namespace MediTap.Front.Controllers
 {
@@ -33,7 +34,7 @@ namespace MediTap.Front.Controllers
             _httpClient.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
-            var response = await _httpClient.PostAsJsonAsync("api/Patient", new
+            var response = await _httpClient.PostAsJsonAsync("api/Patient/prepare-registration", new
             {
                 firstName = firstName,
                 lastName = lastName,
@@ -59,7 +60,11 @@ namespace MediTap.Front.Controllers
                 return View("RegisterPatient");
             }
 
-            return RedirectToAction("WritePatientCard", new { uname = createdPatient.Uname });
+            return RedirectToAction("WritePatientCard", new
+            {
+                uname = createdPatient.Uname,
+                pendingRegistrationId = createdPatient.PendingRegistrationId
+            });
         }
 
         [HttpPost]
@@ -115,9 +120,59 @@ namespace MediTap.Front.Controllers
             return fallbackMessage;
         }
 
-        public IActionResult Dashboard()
+        public async Task<IActionResult> Dashboard()
         {
-            return View();
+            var token = HttpContext.Session.GetString("JwtToken");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Medic");
+            }
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var dashboardModel = new AdminDashboardViewModel();
+
+            var patientsResponse = await _httpClient.GetAsync("api/Patient/admin/all");
+
+            if (patientsResponse.IsSuccessStatusCode)
+            {
+                var patients = await patientsResponse.Content.ReadFromJsonAsync<List<AdminPatientViewModel>>();
+
+                if (patients != null)
+                {
+                    dashboardModel.TotalPatients = patients.Count;
+                    dashboardModel.InactiveAccounts += patients.Count(p => p.Status != "Active");
+                }
+            }
+
+            var medicsResponse = await _httpClient.GetAsync("api/Medic/admin/all");
+
+            if (medicsResponse.IsSuccessStatusCode)
+            {
+                var medics = await medicsResponse.Content.ReadFromJsonAsync<List<AdminMedicViewModel>>();
+
+                if (medics != null)
+                {
+                    dashboardModel.TotalMedics = medics.Count;
+                    dashboardModel.InactiveAccounts += medics.Count(m => m.Status != "Active");
+                }
+            }
+
+            var resetRequestsResponse = await _httpClient.GetAsync("api/password-reset/admin/pending");
+
+            if (resetRequestsResponse.IsSuccessStatusCode)
+            {
+                var resetRequests = await resetRequestsResponse.Content.ReadFromJsonAsync<List<PasswordResetRequestViewModel>>();
+
+                if (resetRequests != null)
+                {
+                    dashboardModel.PendingPasswordResetRequests = resetRequests.Count;
+                }
+            }
+
+            return View(dashboardModel);
         }
 
         public IActionResult RegisterPatient()
@@ -130,15 +185,327 @@ namespace MediTap.Front.Controllers
             return View();
         }
 
-        public IActionResult WritePatientCard(string uname)
+        public IActionResult WritePatientCard(string uname, string pendingRegistrationId)
         {
             TempData["PatientUname"] = uname;
+            TempData["PendingRegistrationId"] = pendingRegistrationId;
+
             return View();
+        }
+
+        public async Task<IActionResult> ViewPatients()
+        {
+            var token = HttpContext.Session.GetString("JwtToken");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Medic");
+            }
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.GetAsync("api/Patient/admin/all");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                ViewBag.Error = "Could not load patients.";
+                return View(new List<AdminPatientViewModel>());
+            }
+
+            var patients = await response.Content.ReadFromJsonAsync<List<AdminPatientViewModel>>();
+
+            return View(patients ?? new List<AdminPatientViewModel>());
+        }
+
+        public async Task<IActionResult> ViewMedics()
+        {
+            var token = HttpContext.Session.GetString("JwtToken");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Medic");
+            }
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.GetAsync("api/Medic/admin/all");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                ViewBag.Error = "Could not load medics.";
+                return View(new List<AdminMedicViewModel>());
+            }
+
+            var medics = await response.Content.ReadFromJsonAsync<List<AdminMedicViewModel>>();
+
+            return View(medics ?? new List<AdminMedicViewModel>());
+        }
+
+        public async Task<IActionResult> ManageAccounts()
+        {
+            var token = HttpContext.Session.GetString("JwtToken");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Medic");
+            }
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var pageModel = new ManageAccountsPageViewModel();
+
+            var resetRequestsResponse = await _httpClient.GetAsync("api/password-reset/admin/pending");
+
+            if (resetRequestsResponse.IsSuccessStatusCode)
+            {
+                var resetRequests = await resetRequestsResponse.Content
+                    .ReadFromJsonAsync<List<PasswordResetRequestViewModel>>();
+
+                if (resetRequests != null)
+                {
+                    pageModel.PasswordResetRequests = resetRequests;
+                }
+            }
+
+            var patientsResponse = await _httpClient.GetAsync("api/Patient/admin/all");
+
+            if (patientsResponse.IsSuccessStatusCode)
+            {
+                var patients = await patientsResponse.Content.ReadFromJsonAsync<List<AdminPatientViewModel>>();
+
+                if (patients != null)
+                {
+                    pageModel.Accounts.AddRange(patients.Select(p => new ManageAccountViewModel
+                    {
+                        Id = p.Id,
+                        FullName = $"{p.FirstName} {p.LastName}",
+                        FirstName = p.FirstName,
+                        LastName = p.LastName,
+                        Email = p.Email,
+                        PhoneNumber = p.PhoneNumber,
+                        Address = p.Address,
+                        Role = "Patient",
+                        Status = p.Status
+                    }));
+                }
+            }
+
+            var medicsResponse = await _httpClient.GetAsync("api/Medic/admin/all");
+
+            if (medicsResponse.IsSuccessStatusCode)
+            {
+                var medics = await medicsResponse.Content.ReadFromJsonAsync<List<AdminMedicViewModel>>();
+
+                if (medics != null)
+                {
+                    pageModel.Accounts.AddRange(medics.Select(m => new ManageAccountViewModel
+                    {
+                        Id = m.Id,
+                        FullName = $"{m.FirstName} {m.LastName}",
+                        FirstName = m.FirstName,
+                        LastName = m.LastName,
+                        Email = m.Email,
+                        PhoneNumber = m.PhoneNumber,
+                        Role = "Medic",
+                        Status = m.Status
+                    }));
+                }
+            }
+
+            pageModel.Accounts = pageModel.Accounts
+                .OrderBy(a => a.Role)
+                .ThenBy(a => a.FullName)
+                .ToList();
+
+            return View(pageModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CompletePasswordReset(int requestId, string newPassword, string confirmPassword)
+        {
+            var token = HttpContext.Session.GetString("JwtToken");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Medic");
+            }
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.PostAsJsonAsync(
+                $"api/password-reset/admin/complete/{requestId}",
+                new
+                {
+                    newPassword = newPassword,
+                    confirmPassword = confirmPassword
+                });
+
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["ManageAccountsError"] = await response.Content.ReadAsStringAsync();
+                return RedirectToAction("ManageAccounts");
+            }
+
+            TempData["ManageAccountsSuccess"] = "Password reset completed successfully.";
+            return RedirectToAction("ManageAccounts");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RejectPasswordReset(int requestId)
+        {
+            var token = HttpContext.Session.GetString("JwtToken");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Medic");
+            }
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.PostAsync(
+                $"api/password-reset/admin/reject/{requestId}",
+                null);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["ManageAccountsError"] = await response.Content.ReadAsStringAsync();
+                return RedirectToAction("ManageAccounts");
+            }
+
+            TempData["ManageAccountsSuccess"] = "Password reset request rejected.";
+            return RedirectToAction("ManageAccounts");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DisableAccount(int accountId, string role)
+        {
+            var token = HttpContext.Session.GetString("JwtToken");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Medic");
+            }
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var endpoint = role == "Patient"
+                ? $"api/Patient/admin/{accountId}/disable"
+                : $"api/Medic/admin/{accountId}/disable";
+
+            var response = await _httpClient.PutAsync(endpoint, null);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["ManageAccountsError"] = await response.Content.ReadAsStringAsync();
+                return RedirectToAction("ManageAccounts");
+            }
+
+            TempData["ManageAccountsSuccess"] = $"{role} account disabled successfully.";
+            return RedirectToAction("ManageAccounts");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EnableAccount(int accountId, string role)
+        {
+            var token = HttpContext.Session.GetString("JwtToken");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Medic");
+            }
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var endpoint = role == "Patient"
+                ? $"api/Patient/admin/{accountId}/enable"
+                : $"api/Medic/admin/{accountId}/enable";
+
+            var response = await _httpClient.PutAsync(endpoint, null);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["ManageAccountsError"] = await response.Content.ReadAsStringAsync();
+                return RedirectToAction("ManageAccounts");
+            }
+
+            TempData["ManageAccountsSuccess"] = $"{role} account enabled successfully.";
+            return RedirectToAction("ManageAccounts");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateAccount(
+    int accountId,
+    string role,
+    string firstName,
+    string lastName,
+    string email,
+    string? phoneNumber,
+    string? address)
+        {
+            var token = HttpContext.Session.GetString("JwtToken");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction("Login", "Medic");
+            }
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            object requestBody;
+
+            string endpoint;
+
+            if (role == "Patient")
+            {
+                endpoint = $"api/Patient/admin/{accountId}/update";
+
+                requestBody = new
+                {
+                    firstName,
+                    lastName,
+                    email,
+                    phoneNumber,
+                    address
+                };
+            }
+            else
+            {
+                endpoint = $"api/Medic/admin/{accountId}/update";
+
+                requestBody = new
+                {
+                    firstName,
+                    lastName,
+                    email,
+                    phoneNumber
+                };
+            }
+
+            var response = await _httpClient.PutAsJsonAsync(endpoint, requestBody);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["ManageAccountsError"] = await response.Content.ReadAsStringAsync();
+                return RedirectToAction("ManageAccounts");
+            }
+
+            TempData["ManageAccountsSuccess"] = $"{role} account updated successfully.";
+            return RedirectToAction("ManageAccounts");
         }
 
         public class PatientRegisterResponse
         {
-            public string Uname { get; set; }
+            public string PendingRegistrationId { get; set; } = string.Empty;
+
+            public string Uname { get; set; } = string.Empty;
         }
     }
 }

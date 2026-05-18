@@ -49,6 +49,12 @@ namespace MediTap.Api.Controllers
                     return Unauthorized("Invalid email or password.");
                 }
 
+                if (patient.PatientStatus != PatientStatus.Active)
+                {
+                    _logger.LogWarning("Login failed for patient with email: {Email} - Account inactive", request.Email);
+                    return Unauthorized("This patient account is inactive. Please contact the administrator.");
+                }
+
                 var token = GenerateJwtToken(patient.Id, "Patient", patient.Uname);
 
                 return Ok(new
@@ -79,6 +85,12 @@ namespace MediTap.Api.Controllers
                 {
                     _logger.LogWarning("Login failed for medic with email: {Email} - Incorrect password", request.Email);
                     return Unauthorized("Invalid email or password.");
+                }
+
+                if (medic.MedicStatus != MedicStatus.Active)
+                {
+                    _logger.LogWarning("Login failed for medic with email: {Email} - Account inactive", request.Email);
+                    return Unauthorized("This medic account is inactive. Please contact the administrator.");
                 }
 
                 var token = GenerateJwtToken(medic.Id, "Medic", medic.Uname);

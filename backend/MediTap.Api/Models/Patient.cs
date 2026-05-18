@@ -12,6 +12,8 @@
         public string Uname { get; private set; }
         public string PasswordHash { get; set; }
 
+        public PatientStatus PatientStatus { get; set; } = PatientStatus.Active;
+
         /// Non essential info about the patient
 
         public PhoneNumber? PhoneNumber { get; set; }
@@ -40,19 +42,20 @@
 
 
         // Constructors
-        public Patient(string firstName, CNP cnp, DateOnly dateOfBirth, string password)
+        public Patient(string firstName, CNP cnp, DateOnly dateOfBirth, string password, string? uname = null)
         {
-            if(firstName == null) { throw new ArgumentNullException("First name cannot be null"); }
-            if(cnp == null) {throw new ArgumentNullException("CNP cannot be null"); }
-            if(password == null) { throw new ArgumentNullException("Password cannot be null"); }
-
+            if (firstName == null) { throw new ArgumentNullException("First name cannot be null"); }
+            if (cnp == null) { throw new ArgumentNullException("CNP cannot be null"); }
+            if (password == null) { throw new ArgumentNullException("Password cannot be null"); }
 
             this.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
             this.FirstName = firstName;
             this.DateOfBirth = dateOfBirth;
             this.CNP = cnp;
 
-            this.Uname = "P-" + this.FirstName + "-" + this.CNP.CodNumericPersonal.ToString().Substring(0,4) + "-" + Guid.NewGuid().ToString().Substring(0, 8);
+            this.Uname = string.IsNullOrWhiteSpace(uname)
+                ? "P-" + this.FirstName + "-" + this.CNP.CodNumericPersonal.ToString().Substring(0, 4) + "-" + Guid.NewGuid().ToString().Substring(0, 8)
+                : uname;
         }
 
         private Patient()

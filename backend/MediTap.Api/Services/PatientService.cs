@@ -23,10 +23,10 @@ namespace MediTap.Api.Services
             {
                 // Converts the PatientCreationDTO to a Patient entity
                 // // in order for it to be saved on the DB
-                var patient = new Patient(request.FirstName, new CNP(request.CNP), request.DateOfBirth, request.Password)
+                var patient = new Patient(request.FirstName, new CNP(request.CNP), request.DateOfBirth, request.Password, request.Uname)
                 {
                     LastName = request.LastName,
-                    Email = request.Email != null ? new Email(request.Email) : null,
+                    Email = new Email(request.Email),
                     PhoneNumber = request.PhoneNumber != null ? new PhoneNumber(request.PhoneNumber) : null,
                     Address = request.Address ?? string.Empty,
                 };
@@ -87,6 +87,79 @@ namespace MediTap.Api.Services
             }
         }
 
+        IEnumerable<PatientSummaryDTO> IPatientService.GetAllForAdmin()
+        {
+            try
+            {
+                return _context.Patients
+                    .OrderBy(p => p.Id)
+                    .Select(p => new PatientSummaryDTO
+                    {
+                        Id = p.Id,
+                        FirstName = p.FirstName,
+                        LastName = p.LastName,
+                        CNP = p.CNP.CodNumericPersonal,
+                        Email = p.Email != null ? p.Email.EmailAddress : null,
+                        PhoneNumber = p.PhoneNumber != null ? p.PhoneNumber.Number : null,
+                        Address = p.Address,
+                        Status = p.PatientStatus.ToString()
+                    })
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while retrieving all patients for admin.");
+                throw;
+            }
+        }
+
+        void IPatientService.DisableAccount(int patientId)
+        {
+            var patient = _context.Patients.FirstOrDefault(p => p.Id == patientId);
+
+            if (patient == null)
+            {
+                throw new InvalidOperationException("Patient account was not found.");
+            }
+
+            patient.PatientStatus = PatientStatus.Inactive;
+
+            _context.SaveChanges();
+        }
+
+        void IPatientService.EnableAccount(int patientId)
+        {
+            var patient = _context.Patients.FirstOrDefault(p => p.Id == patientId);
+
+            if (patient == null)
+            {
+                throw new InvalidOperationException("Patient account was not found.");
+            }
+
+            patient.PatientStatus = PatientStatus.Active;
+
+            _context.SaveChanges();
+        }
+
+        void IPatientService.UpdateAccountForAdmin(int patientId, PatientAdminUpdateDTO request)
+        {
+            var patient = _context.Patients.FirstOrDefault(p => p.Id == patientId);
+
+            if (patient == null)
+            {
+                throw new InvalidOperationException("Patient account was not found.");
+            }
+
+            patient.FirstName = request.FirstName;
+            patient.LastName = request.LastName;
+            patient.Email = new Email(request.Email);
+            patient.PhoneNumber = string.IsNullOrWhiteSpace(request.PhoneNumber)
+                ? null
+                : new PhoneNumber(request.PhoneNumber);
+            patient.Address = request.Address ?? string.Empty;
+
+            _context.SaveChanges();
+        }
 
         PatientDTO IPatientService.GetById(int id, int loggedInUserId, string role)
         {

@@ -14,6 +14,10 @@ namespace MediTap.Api.DTO
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
 
+        public string Status { get; set; } = string.Empty;
+
+        public string? Address { get; set; }
+
         // Constructor that takes a Patient entity and maps it to the DTO
         public PatientSummaryDTO(Patient p)
         {
@@ -23,6 +27,7 @@ namespace MediTap.Api.DTO
             LastName = p.LastName;
             Email = p.Email?.EmailAddress;
             PhoneNumber = p.PhoneNumber?.Number;
+            Status = p.PatientStatus.ToString();
         }
 
         public PatientSummaryDTO()

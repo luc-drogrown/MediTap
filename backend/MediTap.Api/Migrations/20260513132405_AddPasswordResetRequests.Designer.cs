@@ -3,6 +3,7 @@ using System;
 using MediTap.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MediTap.Api.Migrations
 {
     [DbContext(typeof(MediTapDbContext))]
-    partial class MediTapDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260513132405_AddPasswordResetRequests")]
+    partial class AddPasswordResetRequests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,10 +254,6 @@ namespace MediTap.Api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PatientStatus")
                         .IsRequired()
                         .HasColumnType("text");
 

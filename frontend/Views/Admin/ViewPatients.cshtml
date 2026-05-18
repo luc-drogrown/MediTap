@@ -1,0 +1,99 @@
+﻿@model List<MediTap.Front.Models.Admin.AdminPatientViewModel>
+
+@{
+    ViewData["Title"] = "View Patients";
+}
+
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <a class="sidebar-brand sidebar-brand-link" href="/Admin/Dashboard">
+            <img src="~/images/logo.png" alt="MediTap Logo" class="sidebar-logo" />
+            <span>MediTap</span>
+        </a>
+
+        <a class="sidebar-link" href="/Admin/RegisterPatient">Register Patient</a>
+        <a class="sidebar-link" href="/Admin/RegisterMedic">Register Medic</a>
+        <a class="sidebar-link active" href="/Admin/ViewPatients">View Patients</a>
+        <a class="sidebar-link" href="/Admin/ViewMedics">View Medics</a>
+        <a class="sidebar-link" href="/Admin/ManageAccounts">Manage Accounts</a>
+
+        <a class="sidebar-link logout" href="/">Logout</a>
+    </aside>
+
+    <main class="dashboard-content">
+        <div class="admin-page-header">
+            <div class="admin-page-title-row">
+                <h1>Patients</h1>
+
+                <div class="admin-search-wrapper">
+                    <span class="admin-search-icon">⌕</span>
+                    <input id="adminSearchInput"
+                           class="admin-search-input"
+                           type="text"
+                           placeholder="Search by name, email, phone, or CNP..." />
+                </div>
+            </div>
+
+            <p>View all registered patients in the MediTap system.</p>
+        </div>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">
+                @ViewBag.Error
+            </div>
+        }
+
+        <div class="dashboard-table-card">
+            @if (Model == null || !Model.Any())
+            {
+                <p>No patients found.</p>
+            }
+            else
+            {
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th class="col-id">ID</th>
+                            <th class="col-name">First Name</th>
+                            <th class="col-name">Last Name</th>
+                            <th class="col-cnp">CNP</th>
+                            <th class="col-email">Email</th>
+                            <th class="col-phone">Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var patient in Model)
+                        {
+                            <tr>
+                                <td>@patient.Id</td>
+                                <td>@patient.FirstName</td>
+                                <td>@patient.LastName</td>
+                                <td>@patient.CNP</td>
+                                <td>@patient.Email</td>
+                                <td>@patient.PhoneNumber</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </main>
+</div>
+
+<script>
+    const searchInput = document.getElementById("adminSearchInput");
+    const tableRows = document.querySelectorAll(".admin-table tbody tr");
+
+    searchInput.addEventListener("input", function () {
+        const searchValue = searchInput.value.toLowerCase().trim();
+
+        tableRows.forEach(row => {
+            const rowText = row.innerText.toLowerCase();
+
+            row.style.display = rowText.includes(searchValue)
+                ? ""
+                : "none";
+        });
+    });
+</script>

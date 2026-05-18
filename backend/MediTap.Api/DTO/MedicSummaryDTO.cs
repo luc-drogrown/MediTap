@@ -14,6 +14,8 @@ namespace MediTap.Api.DTO
 
         public string? PhoneNumber { get; set; }
 
+        public string Status { get; set; } = string.Empty;
+
         // Foreign Keys
         public IEnumerable<PatientSummaryDTO>? Patients { get; set; }
 
@@ -27,7 +29,8 @@ namespace MediTap.Api.DTO
             LastName = m.LastName;
             Email = m.Email?.EmailAddress;
             PhoneNumber = m.PhoneNumber?.Number;
-            
+            Status = m.MedicStatus.ToString();
+
             // Map patients to PatientSummaryDTO
             Patients = m.Patients?.Select(p => new PatientSummaryDTO(p));
 
