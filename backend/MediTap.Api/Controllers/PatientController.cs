@@ -277,8 +277,7 @@ namespace MediTap.Api.Controllers
             }
         }
 
-        // TODO
-        // When a Medic calls this, the MedicId in the SymptomDTO updates
+        // TODO --> When a Medic calls this, the MedicId in the SymptomDTO updates
         // CAN BE ONLY USED BY MEDIC
         // Show symptoms for a patient
         // GET: api/patient/5/symptom
@@ -380,9 +379,7 @@ namespace MediTap.Api.Controllers
             var loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
 
-            // This method returns way too much data for how much the final DTO sends to the client
-            // We only need to check that the medic has permissions
-            // TODO
+            // TODO --> This method returns way too much data for how much the final DT. We only need to check that the medic has permissions
             // FIx this and make it more efficient
             var patient = _patientService.GetById(id,loggedInUserId, role);
             if (patient == null)

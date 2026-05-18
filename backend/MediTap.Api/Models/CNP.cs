@@ -52,7 +52,6 @@ namespace MediTap.Api.Models
         
         }
 
-        // TODO -> override object.Equals so that two CNP's are equal if their string property is the same
 
 
 

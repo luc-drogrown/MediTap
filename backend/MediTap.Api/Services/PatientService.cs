@@ -329,6 +329,8 @@ namespace MediTap.Api.Services
             {
                 if(role != "Medic") { return null; }
                 var appointments = _context.Appointments
+                    .Include(p => p.Patient)
+                    .Include(m => m.Medic)
                     .Where(a => a.PatientId == id && a.MedicId == loggedInUserId)
                     .AsEnumerable()
                     .Select(a => new AppointmentDTO(a))

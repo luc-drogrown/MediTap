@@ -2,7 +2,6 @@
 
 namespace MediTap.Api.DTO
 {
-    // TODO
     public class MedicationDTO
     {
         public int Id { get; set; }
